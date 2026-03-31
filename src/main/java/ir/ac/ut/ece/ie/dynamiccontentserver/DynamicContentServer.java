@@ -29,7 +29,9 @@ public class DynamicContentServer {
 				if (isStaticResource(route))
 					httpResponse.writeFile(route);
 				else if (httpRequest.isAction()) {
+					System.out.println(httpRequest.getPayload());
 					ArticleController.addArticle(httpRequest.getPayload());
+					httpResponse.sendNoContentResponse();
 				}
 				else
 					httpResponse.writePage(route);

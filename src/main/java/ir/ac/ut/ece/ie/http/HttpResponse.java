@@ -22,6 +22,11 @@ public class HttpResponse {
                 + "\r\n\r\n";
     }
 
+    public void sendNoContentResponse() throws IOException {
+        String header = "HTTP/1.1 204 No Content\nConnection: close\n";
+        outputStream.write(header.getBytes());
+    }
+
     public void writePage(String pageName) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
         Class<?> c = Class.forName("ir.ac.ut.ece.ie.pages." + pageName);
         Object page = c.getDeclaredConstructor().newInstance();
