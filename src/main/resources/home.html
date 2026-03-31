@@ -1,21 +1,24 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Java Sample Codes</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
-
 <body>
-<h2>Java Sample Codes</h2>
-
-<h3>Session 3: 1404/12/18 - Ramadan War Days!</h3>
-<ul>
-  <li><a href="java/socket-programming.html"> Socket Programming </a></li>
-  <li><a href="java/files.html"> Access to Files </a></li>
-  <li><a href="java/HTTP-HTML.html"> Introduction to HTML and HTTP </a></li>
-  <li><a href="java/dynamic-web-app.html"> Dynamic web application servers </a></li>
-  <li><a href="java/RTTI.html"> Runtime type identification in Java </a></li>
-</ul>
-<hr>
-
-<h3>Session 2: 1404/12/05</h3>
-
-
+    <form action="/upload" method="post">
+        <div>
+            <label class="form-label" for="title">Title</label>
+            <input class="form-control" id="title" type="text" name="title">
+        </div>
+        <div>
+            <label class="form-label" for="abstract">Abstract</label>
+            <input class="form-control" id="abstract" type="text" name="abstract">
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+</body>
+</html>

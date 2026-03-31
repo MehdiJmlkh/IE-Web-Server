@@ -1,9 +1,6 @@
 package ir.ac.ut.ece.ie.dynamiccontentserver;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
@@ -22,17 +19,37 @@ public class DynamicContentServer {
 			String pageName = getPageName(readLine);
 			try {
 
-				Class<?> c = Class.forName("ir.ac.ut.ece.ie.dynamiccontentserver." + pageName);
-				Object page = c.getDeclaredConstructor().newInstance();
-				Method method = c.getMethod("pageBody");
-				byte[] data = (byte[]) method.invoke(page);
+				if (!getFileExtension(pageName).equals("class")) {
+				File file = new File("./src/main/resources/" + pageName);
+				String header = "HTTP1.1 200 OK \r\nContent-Type: text/" + getFileExtension(pageName) + "\r\nContent.Length: "
+						+ file.length()
+						+ "\r\n\r\n";
 
-				String header = "HTTP1.1 200 OK \r\nContent-Type: text/html\r\nContent.Length: " 
-				+ data.length
-				+ "\r\n\r\n";
-
+				RandomAccessFile raf = new RandomAccessFile(file, "r");
+				byte[] data = new byte[1024];
+				int size = 0;
 				socket.getOutputStream().write(header.getBytes());
-				socket.getOutputStream().write(data);
+				try {
+					while((size = raf.read(data)) != -1) {
+						socket.getOutputStream().write(data, 0 , size);
+					}
+				} catch(IOException e) {
+					raf.close();
+				}
+			}
+			else {
+					Class<?> c = Class.forName("ir.ac.ut.ece.ie.dynamiccontentserver." + pageName);
+					Object page = c.getDeclaredConstructor().newInstance();
+					Method method = c.getMethod("pageBody");
+					byte[] data = (byte[]) method.invoke(page);
+
+					String header = "HTTP1.1 200 OK \r\nContent-Type: text/html\r\nContent.Length: "
+							+ data.length
+							+ "\r\n\r\n";
+
+					socket.getOutputStream().write(header.getBytes());
+					socket.getOutputStream().write(data);
+				}
 			} catch (FileNotFoundException | 
 					ClassNotFoundException | InstantiationException | 
 					IllegalAccessException | IllegalArgumentException | 
@@ -54,7 +71,16 @@ public class DynamicContentServer {
 		String fileName = tokenizer.nextToken().substring(1);
 		return fileName;
 	}
-	
+
+	private String getFileExtension(String pageName) {
+		String[] parts = pageName.split("\\.");
+		if (parts.length <= 1) {
+			return "class";
+		}
+		String fileExtension = parts[parts.length - 1];
+		return fileExtension;
+	}
+
 	public static void main(String[] args) throws IOException {
 		DynamicContentServer dcs = new DynamicContentServer();
 		dcs.start();
