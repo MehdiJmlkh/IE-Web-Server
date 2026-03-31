@@ -10,21 +10,19 @@ import java.util.StringTokenizer;
 public class DynamicContentServer {
 	public void start() throws IOException {
 		ServerSocket serverSocket = new ServerSocket(9092);
+
 		Socket socket;
 		while ((socket = serverSocket.accept()) != null) {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			String readLine = reader.readLine();
+			String readLine = readLine(socket);
 			if (readLine == null)
 				continue;
+
 			String pageName = getPageName(readLine);
 			try {
-
-				if (!getFileExtension(pageName).equals("class")) {
-					sendFile(pageName, socket);
-				}
-			else {
+				if (getFileExtension(pageName).equals("class"))
 					sendClass(pageName, socket);
-				}
+				else
+					sendFile(pageName, socket);
 			} catch (FileNotFoundException | 
 					ClassNotFoundException | InstantiationException | 
 					IllegalAccessException | IllegalArgumentException | 
@@ -38,6 +36,11 @@ public class DynamicContentServer {
 			socket.close();
 		}
 		serverSocket.close();
+	}
+
+	private static String readLine(Socket socket) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        return reader.readLine();
 	}
 
 	private static void sendClass(String pageName, Socket socket) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
