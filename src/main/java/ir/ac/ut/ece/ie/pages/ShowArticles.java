@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ShowArticles {
 
-    public byte[] pageBody(Map<String, String> payload) {
+    public byte[] pageBody() {
 
         List<Article> articles = ArticleService.getInstance().getArticles();
 
