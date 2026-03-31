@@ -5,8 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.StringTokenizer;
 
+import static ir.ac.ut.ece.ie.utils.HttpRequestUtil.getRoute;
 import static ir.ac.ut.ece.ie.utils.UrlUtil.getFileExtension;
 import static ir.ac.ut.ece.ie.utils.UrlUtil.isStaticResource;
 
@@ -80,12 +80,6 @@ public class DynamicContentServer {
 		} catch(IOException e) {
 			raf.close();
 		}
-	}
-
-	private String getRoute(String readLine) {
-		StringTokenizer tokenizer = new StringTokenizer(readLine, " ");
-		tokenizer.nextToken();
-        return tokenizer.nextToken().substring(1);
 	}
 
 	public static void main(String[] args) throws IOException {
