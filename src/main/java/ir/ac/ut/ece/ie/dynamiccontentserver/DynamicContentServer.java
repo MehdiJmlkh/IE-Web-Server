@@ -7,6 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
+import static ir.ac.ut.ece.ie.utils.UrlUtil.getFileExtension;
+import static ir.ac.ut.ece.ie.utils.UrlUtil.isStaticResource;
+
 public class DynamicContentServer {
 	public void start() throws IOException {
 		ServerSocket serverSocket = new ServerSocket(9092);
@@ -19,7 +22,7 @@ public class DynamicContentServer {
 
 			String route = getRoute(readLine);
 			try {
-				if (hasFileExtension(route))
+				if (isStaticResource(route))
 					sendFile(route, socket);
 				else
 					sendPage(route, socket);
@@ -83,18 +86,6 @@ public class DynamicContentServer {
 		StringTokenizer tokenizer = new StringTokenizer(readLine, " ");
 		tokenizer.nextToken();
         return tokenizer.nextToken().substring(1);
-	}
-
-	private String getFileExtension(String pageName) {
-		String[] parts = pageName.split("\\.");
-		if (parts.length <= 1) {
-			return null;
-		}
-        return parts[parts.length - 1];
-	}
-
-	private boolean hasFileExtension(String route) {
-		return route.contains(".");
 	}
 
 	public static void main(String[] args) throws IOException {
