@@ -1,0 +1,37 @@
+.article {
+    border-radius: 15px;
+    padding: 1rem;
+    margin: 20px 0;
+    box-shadow: 0 4px 6px -1px rgba(0,  0, 0, 0.1);
+    transition: transform 0.15s ease-in;
+}
+
+.article__header {
+    font-size: 1.3rem;
+}
+
+.article__abstract {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.article:hover {
+    transform: scale(1.02);
+}
+
+.search-box {
+    display: flex;
+    width: 100%;
+    border-radius: 25px;
+    height: 2.5rem;
+    margin: 10px 10px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.search-box__input {
+    border: 0;
+    outline: none;
+    width: 95%;
+}
