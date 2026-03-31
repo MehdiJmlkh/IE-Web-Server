@@ -1,5 +1,7 @@
 package ir.ac.ut.ece.ie.dynamiccontentserver;
 
+import ir.ac.ut.ece.ie.http.HttpRequest;
+
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,15 +22,12 @@ public class DynamicContentServer {
 
 		Socket socket;
 		while ((socket = serverSocket.accept()) != null) {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			String readLine = readHeader(reader);
-			if (readLine == null)
+			HttpRequest  httpRequest = new HttpRequest(socket);
+			String requestHeader = httpRequest.readHeader();
+
+			if (requestHeader == null)
 				continue;
-			String body = readHttpPayload(reader);
-			if (!body.isEmpty())
-				System.out.println(body);
-			System.out.println(parsePayload(body));
-			String route = getRoute(readLine);
+			String route = getRoute(requestHeader);
 			try {
 				if (isStaticResource(route))
 					sendFile(route, socket);
@@ -48,42 +47,6 @@ public class DynamicContentServer {
 			socket.close();
 		}
 		serverSocket.close();
-	}
-
-	private static String readHeader(BufferedReader reader) throws IOException {
-		return reader.readLine();
-	}
-
-	private static String readHttpPayload(BufferedReader reader) throws IOException {
-		String line;
-		int contentLength = 0;
-		while (!(line = reader.readLine()).isEmpty()) {
-			if (line.startsWith("Content-Length:")) {
-				contentLength = Integer.parseInt(line.split(":")[1].trim());
-			}
-		}
-
-		char[] bodyChars = new char[contentLength];
-		reader.read(bodyChars, 0, contentLength);
-
-		return new String(bodyChars);
-	}
-
-	private Map<String, String> parsePayload(String payload) {
-		String[] pairs = payload.split("&");
-		Map<String, String> result = new HashMap<>();
-
-		for (String pair : pairs) {
-			String[] keyValue = pair.split("=", 2);
-
-			String key = URLDecoder.decode(keyValue[0], StandardCharsets.UTF_8);
-			String value = keyValue.length > 1
-					? URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8)
-					: "";
-
-			result.put(key, value);
-		}
-		return result;
 	}
 	private static String getHeader(Long contentLength, String textType) {
         return "HTTP1.1 200 OK \r\nContent-Type: text/" + textType + "\r\nContent.Length: "
