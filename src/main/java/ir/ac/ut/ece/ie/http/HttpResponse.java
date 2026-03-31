@@ -24,7 +24,7 @@ public class HttpResponse {
     }
 
     public void writePage(String pageName, Map<String, String> payload) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
-        Class<?> c = Class.forName("ir.ac.ut.ece.ie.dynamiccontentserver." + pageName);
+        Class<?> c = Class.forName("ir.ac.ut.ece.ie.pages." + pageName);
         Object page = c.getDeclaredConstructor().newInstance();
         Method method = c.getMethod("pageBody", Map.class);
         byte[] data = (byte[]) method.invoke(page, payload);

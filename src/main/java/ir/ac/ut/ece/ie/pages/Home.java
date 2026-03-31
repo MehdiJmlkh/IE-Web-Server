@@ -1,4 +1,4 @@
-package ir.ac.ut.ece.ie.dynamiccontentserver;
+package ir.ac.ut.ece.ie.pages;
 
 import java.io.IOException;
 import java.io.InputStream;
