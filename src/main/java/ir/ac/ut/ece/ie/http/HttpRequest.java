@@ -11,20 +11,28 @@ import java.util.Map;
 
 public class HttpRequest {
     private final BufferedReader reader;
+    private final String header;
+    Map<String, String> payload;
 
     public HttpRequest(Socket socket) throws IOException {
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        header = readHeader();
+        payload = readPayload();
     }
 
-    public String readHeader() throws IOException {
+    public boolean isAction() {
+        return !payload.isEmpty();
+    }
+
+    private String readHeader() throws IOException {
         return reader.readLine();
     }
 
-    public Map<String, String> readPayload() throws IOException {
-        return parsePayload(getRawPayload());
+    private Map<String, String> readPayload() throws IOException {
+        return parsePayload(readRawPayload());
     }
 
-    private String getRawPayload() throws IOException {
+    private String readRawPayload() throws IOException {
         String line;
         int contentLength = 0;
         while (!(line = reader.readLine()).isEmpty()) {
@@ -57,5 +65,13 @@ public class HttpRequest {
             result.put(key, value);
         }
         return result;
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public Map<String, String> getPayload() {
+        return payload;
     }
 }

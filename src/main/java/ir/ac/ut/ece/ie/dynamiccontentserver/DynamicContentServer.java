@@ -21,15 +21,15 @@ public class DynamicContentServer {
 			HttpRequest  httpRequest = new HttpRequest(socket);
 			HttpResponse httpResponse = new HttpResponse(socket.getOutputStream());
 
-			String requestHeader = httpRequest.readHeader();
+			String requestHeader = httpRequest.getHeader();
 			if (requestHeader == null)
 				continue;
 			String route = getRoute(requestHeader);
 			try {
 				if (isStaticResource(route))
 					httpResponse.writeFile(route);
-				else if (route.equals("addarticle")) {
-					ArticleController.addArticle(httpRequest.readPayload());
+				else if (httpRequest.isAction()) {
+					ArticleController.addArticle(httpRequest.getPayload());
 				}
 				else
 					httpResponse.writePage(route);
