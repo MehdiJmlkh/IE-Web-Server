@@ -26,9 +26,9 @@ public class DynamicContentServer {
 			String route = getRoute(requestHeader);
 			try {
 				if (isStaticResource(route))
-					httpResponse.sendFile(route);
+					httpResponse.writeFile(route);
 				else
-					httpResponse.sendPage(route, httpRequest.readPayload());
+					httpResponse.writePage(route, httpRequest.readPayload());
 
 			} catch (FileNotFoundException |
 					ClassNotFoundException | InstantiationException | 
