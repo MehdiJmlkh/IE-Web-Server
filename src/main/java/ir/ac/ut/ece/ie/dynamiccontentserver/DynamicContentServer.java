@@ -20,35 +20,10 @@ public class DynamicContentServer {
 			try {
 
 				if (!getFileExtension(pageName).equals("class")) {
-				File file = new File("./src/main/resources/" + pageName);
-				String header = "HTTP1.1 200 OK \r\nContent-Type: text/" + getFileExtension(pageName) + "\r\nContent.Length: "
-						+ file.length()
-						+ "\r\n\r\n";
-
-				RandomAccessFile raf = new RandomAccessFile(file, "r");
-				byte[] data = new byte[1024];
-				int size = 0;
-				socket.getOutputStream().write(header.getBytes());
-				try {
-					while((size = raf.read(data)) != -1) {
-						socket.getOutputStream().write(data, 0 , size);
-					}
-				} catch(IOException e) {
-					raf.close();
+					sendFile(pageName, socket);
 				}
-			}
 			else {
-					Class<?> c = Class.forName("ir.ac.ut.ece.ie.dynamiccontentserver." + pageName);
-					Object page = c.getDeclaredConstructor().newInstance();
-					Method method = c.getMethod("pageBody");
-					byte[] data = (byte[]) method.invoke(page);
-
-					String header = "HTTP1.1 200 OK \r\nContent-Type: text/html\r\nContent.Length: "
-							+ data.length
-							+ "\r\n\r\n";
-
-					socket.getOutputStream().write(header.getBytes());
-					socket.getOutputStream().write(data);
+					sendClass(pageName, socket);
 				}
 			} catch (FileNotFoundException | 
 					ClassNotFoundException | InstantiationException | 
@@ -64,7 +39,42 @@ public class DynamicContentServer {
 		}
 		serverSocket.close();
 	}
-	
+
+	private static void sendClass(String pageName, Socket socket) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
+		Class<?> c = Class.forName("ir.ac.ut.ece.ie.dynamiccontentserver." + pageName);
+		Object page = c.getDeclaredConstructor().newInstance();
+		Method method = c.getMethod("pageBody");
+		byte[] data = (byte[]) method.invoke(page);
+
+		String header = getHeader((long) data.length, "html");
+
+		socket.getOutputStream().write(header.getBytes());
+		socket.getOutputStream().write(data);
+	}
+
+	private static String getHeader(Long contentLength, String textType) {
+        return "HTTP1.1 200 OK \r\nContent-Type: text/" + textType + "\r\nContent.Length: "
+                + contentLength
+                + "\r\n\r\n";
+	}
+
+	private void sendFile(String pageName, Socket socket) throws IOException {
+		File file = new File("./src/main/resources/" + pageName);
+		String header = getHeader(file.length(), getFileExtension(pageName));
+
+		RandomAccessFile raf = new RandomAccessFile(file, "r");
+		byte[] data = new byte[1024];
+		int size = 0;
+		socket.getOutputStream().write(header.getBytes());
+		try {
+			while((size = raf.read(data)) != -1) {
+				socket.getOutputStream().write(data, 0 , size);
+			}
+		} catch(IOException e) {
+			raf.close();
+		}
+	}
+
 	private String getPageName(String readLine) {
 		StringTokenizer tokenizer = new StringTokenizer(readLine, " ");
 		tokenizer.nextToken();

@@ -1,14 +1,13 @@
 package ir.ac.ut.ece.ie.dynamiccontentserver;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
 
 public class Home {
 
     public byte[] pageBody() {
-        try {
-            return Files.readAllBytes(Path.of("./src/main/resources/home.html"));
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("home.html")) {
+            return is.readAllBytes();
         } catch (IOException e) {
             e.printStackTrace();
             return new byte[0];
