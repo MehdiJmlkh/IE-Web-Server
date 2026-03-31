@@ -1,12 +1,16 @@
 package ir.ac.ut.ece.ie.dynamiccontentserver;
 
+import ir.ac.ut.ece.ie.controllers.ArticleController;
 import ir.ac.ut.ece.ie.http.HttpRequest;
 import ir.ac.ut.ece.ie.http.HttpResponse;
+import ir.ac.ut.ece.ie.services.Article;
+import ir.ac.ut.ece.ie.services.ArticleService;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
 
 import static ir.ac.ut.ece.ie.utils.HttpRequestUtil.getRoute;
 import static ir.ac.ut.ece.ie.utils.UrlUtil.isStaticResource;
@@ -27,6 +31,9 @@ public class DynamicContentServer {
 			try {
 				if (isStaticResource(route))
 					httpResponse.writeFile(route);
+				else if (route.equals("addarticle")) {
+					ArticleController.addArticle(httpRequest.readPayload());
+				}
 				else
 					httpResponse.writePage(route, httpRequest.readPayload());
 

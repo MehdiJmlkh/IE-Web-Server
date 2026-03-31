@@ -7,7 +7,7 @@ import java.util.Map;
 public class Home {
 
     public byte[] pageBody(Map<String, String> payload) {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("home.html")) {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("addArticle.html")) {
             return is.readAllBytes();
         } catch (IOException e) {
             e.printStackTrace();
