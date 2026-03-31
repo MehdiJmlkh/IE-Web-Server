@@ -2,10 +2,11 @@ package ir.ac.ut.ece.ie.dynamiccontentserver;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 public class Home {
 
-    public byte[] pageBody() {
+    public byte[] pageBody(Map<String, String> payload) {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("home.html")) {
             return is.readAllBytes();
         } catch (IOException e) {

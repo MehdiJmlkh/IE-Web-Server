@@ -7,9 +7,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
 
 import static ir.ac.ut.ece.ie.utils.HttpRequestUtil.getRoute;
@@ -32,7 +29,7 @@ public class DynamicContentServer {
 				if (isStaticResource(route))
 					sendFile(route, socket);
 				else
-					sendPage(route, socket);
+					sendPage(route, socket, httpRequest.readPayload());
 
 			} catch (FileNotFoundException |
 					ClassNotFoundException | InstantiationException | 
@@ -54,11 +51,11 @@ public class DynamicContentServer {
                 + "\r\n\r\n";
 	}
 
-	private static void sendPage(String pageName, Socket socket) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
+	private static void sendPage(String pageName, Socket socket, Map<String, String> payload) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
 		Class<?> c = Class.forName("ir.ac.ut.ece.ie.dynamiccontentserver." + pageName);
 		Object page = c.getDeclaredConstructor().newInstance();
-		Method method = c.getMethod("pageBody");
-		byte[] data = (byte[]) method.invoke(page);
+		Method method = c.getMethod("pageBody", Map.class);
+		byte[] data = (byte[]) method.invoke(page, payload);
 
 		String header = getHeader((long) data.length, "html");
 
