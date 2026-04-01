@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import static ir.ac.ut.ece.ie.utils.UrlUtil.getFileExtension;
 
@@ -27,11 +28,11 @@ public class HttpResponse {
         outputStream.write(header.getBytes());
     }
 
-    public void writePage(String pageName) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
+    public void writePage(String pageName, Map<String, String> params) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
         Class<?> c = Class.forName("ir.ac.ut.ece.ie.pages." + pageName);
         Object page = c.getDeclaredConstructor().newInstance();
-        Method method = c.getMethod("pageBody");
-        byte[] data = (byte[]) method.invoke(page);
+        Method method = c.getMethod("pageBody", Map.class);
+        byte[] data = (byte[]) method.invoke(page, params);
 
         String header = createHeader((long) data.length, "html");
 

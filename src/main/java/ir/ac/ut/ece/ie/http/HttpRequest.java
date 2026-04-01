@@ -57,10 +57,8 @@ public class HttpRequest {
         for (String pair : pairs) {
             String[] keyValue = pair.split("=");
 
-            String key = URLDecoder.decode(keyValue[0], StandardCharsets.UTF_8);
-            String value = keyValue.length > 1
-                    ? URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8)
-                    : "";
+            String key = keyValue[0];
+            String value = keyValue.length > 1 ? keyValue[1] : "";
 
             result.put(key, value);
         }

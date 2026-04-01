@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static ir.ac.ut.ece.ie.utils.HttpRequestUtil.getParams;
 import static ir.ac.ut.ece.ie.utils.HttpRequestUtil.getRoute;
 import static ir.ac.ut.ece.ie.utils.UrlUtil.isStaticResource;
 
@@ -34,7 +35,7 @@ public class DynamicContentServer {
 					httpResponse.sendNoContentResponse();
 				}
 				else
-					httpResponse.writePage(route);
+					httpResponse.writePage(route, getParams(requestHeader));
 
 			} catch (FileNotFoundException |
 					ClassNotFoundException | InstantiationException | 
