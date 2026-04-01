@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/showArticles.css" />
+</head>
+<body>
+    <div class="navbar">
+        <img class="navbar__icon" src="images/icon.png" alt="">
+        <form action="filter-articles" method="post" class="search-box">
+            <input name="search" class="search-box__input" type="text" placeholder="Search papers...">
+        </form>
+    </div>
+    <h1>Articles</h1>
+    {articles}
+</body>
+</html>
+

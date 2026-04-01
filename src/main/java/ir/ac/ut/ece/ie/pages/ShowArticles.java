@@ -1,4 +1,12 @@
 package ir.ac.ut.ece.ie.pages;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Map;
 
 import ir.ac.ut.ece.ie.services.ArticleService;
@@ -11,36 +19,41 @@ public class ShowArticles {
 
         List<Article> articles = ArticleService.getInstance().getFilteredArticles();
 
-        StringBuilder html = new StringBuilder();
-
-        html.append("<html>");
-        html.append("<head>");
-        html.append("<title>Articles</title>");
-        html.append("<link rel=\"stylesheet\" href=\"css/normalize.css\" />");
-        html.append("<link rel=\"stylesheet\" href=\"bootstrap/bootstrap.min.css\" />");
-        html.append("<link rel=\"stylesheet\" href=\"css/showArticles.css\" />");
-        html.append("</head>");
-
-        html.append("<body>");
-
-        html.append("<form action=\"filter-articles\" method=\"post\" class=\"search-box\">");
-        html.append("<input name=\"search\" class=\"search-box__input\" type=\"text\" placeholder=\"Search papers...\">");
-        html.append("</form>");
-
-        html.append("<h1>Articles</h1>");
+        StringBuilder articles_html = new StringBuilder();
 
         for (Article a : articles) {
-            html.append("<div class=\"article\">");
-            html.append("<a href=\"ArticleDetails?title=" + a.getTitle().toLowerCase().replaceAll(" ", "-") + "\" class=\"article__header\">")
-                    .append(a.getTitle()).append("</a>");
-            html.append("<p class=\"article__abstract\">").append(a.getAbstract(), 0, 400).append("...</p>");
-            html.append("</div>");
+            String slug = a.getTitle().toLowerCase().replaceAll(" ", "-");
+            String abstractSnippet = a.getAbstract().length() > 400
+                    ? a.getAbstract().substring(0, 400) + "..."
+                    : a.getAbstract();
+
+            articles_html.append(String.format("""
+                <div class="article">
+                  <a href="ArticleDetails?title=%s" class="article__header">%s</a>
+                  <p class="article__abstract">%s</p>
+                </div>
+                """, slug, a.getTitle(), abstractSnippet));
         }
-
-        html.append("</body>");
-        html.append("</html>");
-
-        return html.toString().getBytes();
+        
+        String html = loadTemplate("searchBox.html")
+                .replace("{articles}", articles_html.toString());
+        return html.getBytes();
     }
+
+    public String loadTemplate(String name) {
+        try {
+            URL url = getClass().getClassLoader().getResource(name);
+            if (url == null) return "";
+
+            Path path = Paths.get(url.toURI());
+            return Files.readString(path, StandardCharsets.UTF_8);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+
 }
 
