@@ -22,7 +22,7 @@
 
 .navbar{
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
 }
 
 .navbar__icon {
@@ -44,4 +44,8 @@
     border: 0;
     outline: none;
     width: 95%;
+}
+
+.navbar__btn {
+    margin-left: 10px;;
 }
