@@ -40,7 +40,7 @@ public class HttpRequest {
         if (payload.isEmpty())
             return new HashMap<>();
 
-        String[] pairs = payload.split("&");
+        String[] pairs = payload.replaceAll("\\+", " ").split("&");
         Map<String, String> result = new HashMap<>();
 
         for (String pair : pairs) {
