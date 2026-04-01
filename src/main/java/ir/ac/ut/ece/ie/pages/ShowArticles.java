@@ -10,6 +10,8 @@ import ir.ac.ut.ece.ie.services.ArticleService;
 import ir.ac.ut.ece.ie.services.Article;
 import java.util.List;
 
+import static ir.ac.ut.ece.ie.utils.FileUtil.loadTemplate;
+
 public class ShowArticles {
 
     public byte[] pageBody(Map<String, String> params) {
@@ -36,21 +38,5 @@ public class ShowArticles {
                 .replace("{articles}", articles_html.toString());
         return html.getBytes();
     }
-
-    public String loadTemplate(String name) {
-        try {
-            URL url = getClass().getClassLoader().getResource(name);
-            if (url == null) return "";
-
-            Path path = Paths.get(url.toURI());
-            return Files.readString(path, StandardCharsets.UTF_8);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-
 }
 

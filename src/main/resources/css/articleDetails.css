@@ -1,0 +1,9 @@
+
+.abstract {
+    margin-top: 2rem;
+    text-align: justify;
+}
+
+.abstract__header {
+    color: #555;
+}

@@ -1,3 +1,9 @@
+:root {
+  --primary-color: #0170df;
+  --text-color: #212529; 
+  --secondary-color: #f8f9fa;
+}
+
 body {
   font-family:
     system-ui,
@@ -12,6 +18,7 @@ body {
     "Helvetica Neue",
     sans-serif;
 
-  margin: 0 20px;
+  margin: 0 10px;
   max-width: 1024px;
+  color: var(--text-color);
 }
