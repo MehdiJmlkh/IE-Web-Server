@@ -22,7 +22,8 @@ public class ArticleDetails {
         String html = loadTemplate("articleDetails.html")
                 .replace("{title}", article.getTitle())
                 .replace("{year}",  String.valueOf(article.getYear()))
-                .replace("{abstract}", article.getAbstract());
+                .replace("{abstract}", article.getAbstract())
+                .replace("{body}", article.getBody());
         return html.getBytes();
     }
 }

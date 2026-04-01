@@ -1,9 +1,11 @@
 
-.abstract {
+.abstract,
+.body {
     margin-top: 2rem;
     text-align: justify;
 }
 
-.abstract__header {
+.abstract__header,
+.body__header {
     color: #555;
 }
