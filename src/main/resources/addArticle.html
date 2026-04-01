@@ -7,18 +7,19 @@
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/addArticle.css" />
 </head>
 <body>
-    <form action="/addarticle" method="post">
+    <form action="/addarticle" method="post" class="form">
         <div>
             <label class="form-label" for="title">Title</label>
             <input class="form-control" id="title" type="text" name="title">
         </div>
         <div>
             <label class="form-label" for="abstract">Abstract</label>
-            <input class="form-control" id="abstract" type="text" name="abstract">
+            <textarea class="form-control" id="abstract" name="abstract" rows="5"></textarea>
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="form__btn btn btn-primary" type="submit">Submit</button>
     </form>
 </body>
  <script>
