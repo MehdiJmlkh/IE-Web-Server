@@ -1,12 +1,9 @@
 package ir.ac.ut.ece.ie.pages;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Map;
 
 import ir.ac.ut.ece.ie.services.ArticleService;
@@ -34,8 +31,8 @@ public class ShowArticles {
                 </div>
                 """, slug, a.getTitle(), abstractSnippet));
         }
-        
-        String html = loadTemplate("searchBox.html")
+
+        String html = loadTemplate("showArticles.html")
                 .replace("{articles}", articles_html.toString());
         return html.getBytes();
     }
