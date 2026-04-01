@@ -42,8 +42,9 @@ public class DynamicContentServer {
 
 					}
 				}
-				else
+				else{
 					httpResponse.writePage(path, getParams(requestHeader));
+				}
 
 			} catch (FileNotFoundException |
 					ClassNotFoundException | InstantiationException | 

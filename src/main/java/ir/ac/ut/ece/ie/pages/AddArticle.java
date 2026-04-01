@@ -10,7 +10,7 @@ import java.util.Map;
 public class AddArticle {
     public byte[] pageBody(Map<String, String> payload) {
         System.out.println(payload);
-        ArticleService.getInstance().addArticle(new Article(payload.get("title"), payload.get("abstract"), ""));
+        ArticleService.getInstance().addArticle(new Article(payload.get("title"), payload.get("abstract"), "", 2022));
 
         System.out.println(ArticleService.getInstance().getArticles());
 

@@ -4,19 +4,21 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.Map;
 
 import ir.ac.ut.ece.ie.services.ArticleService;
 import ir.ac.ut.ece.ie.services.Article;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ir.ac.ut.ece.ie.utils.FileUtil.loadTemplate;
 
 public class ShowArticles {
 
     public byte[] pageBody(Map<String, String> params) {
-
-        List<Article> articles = ArticleService.getInstance().getFilteredArticles();
+        List<Article> articles = ArticleService.getInstance()
+                .getFilteredArticles();
 
         StringBuilder articles_html = new StringBuilder();
 
@@ -29,9 +31,10 @@ public class ShowArticles {
             articles_html.append(String.format("""
                 <div class="article">
                   <a href="ArticleDetails?title=%s" class="article__header">%s</a>
+                  <div>%s</div>
                   <p class="article__abstract">%s</p>
                 </div>
-                """, slug, a.getTitle(), abstractSnippet));
+                """, slug, a.getTitle(), a.getYear(),abstractSnippet));
         }
 
         String html = loadTemplate("showArticles.html")

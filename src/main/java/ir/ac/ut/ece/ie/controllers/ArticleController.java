@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class ArticleController {
     public static void addArticle(Map<String, String> payload) {
-        Article article = new Article(payload.get("title"), payload.get("abstract"), "");
+        Article article = new Article(payload.get("title"), payload.get("abstract"), "", 2022);
         ArticleService.getInstance().addArticle(article);
     }
 
