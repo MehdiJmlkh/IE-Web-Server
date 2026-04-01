@@ -11,10 +11,13 @@
 </head>
 <body>
     <div class="navbar">
-        <img class="navbar__icon" src="images/icon.png" alt="">
+        <a href="ShowArticles">
+            <img class="navbar__icon" src="images/icon.png" alt="">
+        </a>
         <form action="filter-articles" method="post" class="search-box">
             <input name="search" class="search-box__input" type="text" placeholder="Search papers...">
         </form>
+        <a href="addArticle.html" class="navbar__btn btn btn-primary">Add Paper</a>
     </div>
     
     <h1 class="article-title">{title}</h1>
