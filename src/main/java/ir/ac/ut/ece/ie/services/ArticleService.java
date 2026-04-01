@@ -2,11 +2,13 @@ package ir.ac.ut.ece.ie.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ArticleService {
 
     private static final ArticleService instance = new ArticleService();
     private List<Article> articles = new ArrayList<>();
+    private String searchInput = null;
 
     private ArticleService() {
         articles.add(new Article(
@@ -44,5 +46,21 @@ public class ArticleService {
 
     public List<Article> getArticles() {
         return articles;
+    }
+
+    public List<Article> getFilteredArticles() {
+        if (searchInput == null)
+            return articles;
+
+        return articles
+                .stream()
+                .filter(article ->
+                        article.getTitle().contains(searchInput) ||
+                        article.getAbstract().contains(searchInput))
+                .collect(Collectors.toList());
+    }
+
+    public void setFilter(String searchInput) {
+        this.searchInput = searchInput;
     }
 }

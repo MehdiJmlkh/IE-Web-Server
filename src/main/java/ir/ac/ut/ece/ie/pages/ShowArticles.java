@@ -9,7 +9,7 @@ public class ShowArticles {
 
     public byte[] pageBody(Map<String, String> params) {
 
-        List<Article> articles = ArticleService.getInstance().getArticles();
+        List<Article> articles = ArticleService.getInstance().getFilteredArticles();
 
         StringBuilder html = new StringBuilder();
 
@@ -23,8 +23,8 @@ public class ShowArticles {
 
         html.append("<body>");
 
-        html.append("<form class=\"search-box\">");
-        html.append("<input class=\"search-box__input\" type=\"text\" placeholder=\"Search papers...\">");
+        html.append("<form action=\"filter-articles\" method=\"post\" class=\"search-box\">");
+        html.append("<input name=\"search\" class=\"search-box__input\" type=\"text\" placeholder=\"Search papers...\">");
         html.append("</form>");
 
         html.append("<h1>Articles</h1>");

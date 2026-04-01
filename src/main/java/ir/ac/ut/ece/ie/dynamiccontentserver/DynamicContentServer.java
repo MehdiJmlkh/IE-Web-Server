@@ -3,6 +3,7 @@ package ir.ac.ut.ece.ie.dynamiccontentserver;
 import ir.ac.ut.ece.ie.controllers.ArticleController;
 import ir.ac.ut.ece.ie.http.HttpRequest;
 import ir.ac.ut.ece.ie.http.HttpResponse;
+import ir.ac.ut.ece.ie.services.ArticleService;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -25,17 +26,24 @@ public class DynamicContentServer {
 			String requestHeader = httpRequest.getHeader();
 			if (requestHeader == null)
 				continue;
-			String route = getPath(requestHeader);
+			String path = getPath(requestHeader);
 			try {
-				if (isStaticResource(route))
-					httpResponse.writeFile(route);
+				if (isStaticResource(path))
+					httpResponse.writeFile(path);
 				else if (httpRequest.isAction()) {
-					System.out.println(httpRequest.getPayload());
-					ArticleController.addArticle(httpRequest.getPayload());
-					httpResponse.sendNoContentResponse();
+					if (path.equals("filter-articles")) {
+						ArticleService.getInstance().setFilter(httpRequest.getPayload().get("search"));
+						httpResponse.writePage("ShowArticles", null);
+					}
+					else {
+						System.out.println(httpRequest.getPayload());
+						ArticleController.addArticle(httpRequest.getPayload());
+						httpResponse.sendNoContentResponse();
+
+					}
 				}
 				else
-					httpResponse.writePage(route, getParams(requestHeader));
+					httpResponse.writePage(path, getParams(requestHeader));
 
 			} catch (FileNotFoundException |
 					ClassNotFoundException | InstantiationException | 
