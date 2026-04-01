@@ -4,35 +4,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HttpRequest {
-    private final BufferedReader reader;
     private final String header;
     Map<String, String> payload;
 
     public HttpRequest(Socket socket) throws IOException {
-        reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        header = readHeader();
-        payload = readPayload();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        header = reader.readLine();
+        payload = parsePayload(readRawPayload(reader));
     }
 
     public boolean isAction() {
         return !payload.isEmpty();
     }
 
-    private String readHeader() throws IOException {
-        return reader.readLine();
-    }
-
-    private Map<String, String> readPayload() throws IOException {
-        return parsePayload(readRawPayload());
-    }
-
-    private String readRawPayload() throws IOException {
+    private String readRawPayload(BufferedReader reader) throws IOException {
         String line;
         int contentLength = 0;
         while (!(line = reader.readLine()).isEmpty()) {

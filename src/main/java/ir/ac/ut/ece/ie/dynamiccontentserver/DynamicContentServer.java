@@ -10,7 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import static ir.ac.ut.ece.ie.utils.HttpRequestUtil.getParams;
-import static ir.ac.ut.ece.ie.utils.HttpRequestUtil.getRoute;
+import static ir.ac.ut.ece.ie.utils.HttpRequestUtil.getPath;
 import static ir.ac.ut.ece.ie.utils.UrlUtil.isStaticResource;
 
 public class DynamicContentServer {
@@ -25,7 +25,7 @@ public class DynamicContentServer {
 			String requestHeader = httpRequest.getHeader();
 			if (requestHeader == null)
 				continue;
-			String route = getRoute(requestHeader);
+			String route = getPath(requestHeader);
 			try {
 				if (isStaticResource(route))
 					httpResponse.writeFile(route);

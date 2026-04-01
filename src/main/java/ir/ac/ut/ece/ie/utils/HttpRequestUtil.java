@@ -5,19 +5,19 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 public class HttpRequestUtil {
-    public static String getRoute(String httpRequest) {
-        StringTokenizer tokenizer = new StringTokenizer(httpRequest, " ?");
+    public static String getPath(String httpRequestHeader) {
+        StringTokenizer tokenizer = new StringTokenizer(httpRequestHeader, " ?");
         tokenizer.nextToken();
         return tokenizer.nextToken().substring(1);
     }
 
-    public static Map<String, String> getParams(String httpRequest) {
+    public static Map<String, String> getParams(String httpRequestHeader) {
         Map<String, String> params = new HashMap<>();
 
-        StringTokenizer tokenizer = new StringTokenizer(httpRequest, " ");
-        tokenizer.nextToken(); // skip GET/POST
+        StringTokenizer tokenizer = new StringTokenizer(httpRequestHeader, " ");
+        tokenizer.nextToken();
 
-        String path = tokenizer.nextToken(); // /path?name=ali&age=20
+        String path = tokenizer.nextToken();
 
         int queryIndex = path.indexOf('?');
         if (queryIndex == -1) {
@@ -36,6 +36,4 @@ public class HttpRequestUtil {
 
         return params;
     }
-
-
 }
