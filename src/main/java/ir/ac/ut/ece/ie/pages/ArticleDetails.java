@@ -23,7 +23,7 @@ public class ArticleDetails {
                 .replace("{title}", article.getTitle())
                 .replace("{year}",  String.valueOf(article.getYear()))
                 .replace("{abstract}", article.getAbstract())
-                .replace("{body}", article.getBody());
+                .replace("{body}", "<p>" + article.getBody().replace("\n", "</p><p>") + "</p>");
         return html.getBytes();
     }
 }
