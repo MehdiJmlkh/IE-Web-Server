@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,14 +42,14 @@ public class HttpRequest {
         if (payload.isEmpty())
             return new HashMap<>();
 
-        String[] pairs = payload.replaceAll("\\+", " ").split("&");
+        String[] pairs = payload.split("&");
         Map<String, String> result = new HashMap<>();
 
         for (String pair : pairs) {
             String[] keyValue = pair.split("=");
 
-            String key = keyValue[0];
-            String value = keyValue.length > 1 ? keyValue[1] : "";
+            String key = URLDecoder.decode(keyValue[0], StandardCharsets.UTF_8);
+            String value = keyValue.length > 1 ? URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8) : "";
 
             result.put(key, value);
         }
