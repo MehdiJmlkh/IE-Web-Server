@@ -1,5 +1,7 @@
 package ir.ac.ut.ece.ie.http;
 
+import ir.ac.ut.ece.ie.utils.HttpRequestUtil;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +10,8 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+
+import ir.ac.ut.ece.ie.utils.UrlUtil;
 
 public class HttpRequest {
     private final String header;
@@ -56,6 +60,13 @@ public class HttpRequest {
         return result;
     }
 
+    public String getPath() {
+        return HttpRequestUtil.getPath(header);
+    }
+
+    public boolean isStaticResource() {
+        return UrlUtil.isStaticResource(getPath());
+    }
     public String getHeader() {
         return header;
     }

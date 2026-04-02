@@ -20,15 +20,15 @@ public class DynamicContentServer {
 
 		Socket socket;
 		while ((socket = serverSocket.accept()) != null) {
-			HttpRequest  httpRequest = new HttpRequest(socket);
+			HttpRequest httpRequest = new HttpRequest(socket);
 			HttpResponse httpResponse = new HttpResponse(socket.getOutputStream());
 
 			String requestHeader = httpRequest.getHeader();
 			if (requestHeader == null)
 				continue;
-			String path = getPath(requestHeader);
+			String path = httpRequest.getPath();
 			try {
-				if (isStaticResource(path))
+				if (httpRequest.isStaticResource())
 					httpResponse.writeFile(path);
 				else if (httpRequest.isAction()) {
 					if (path.equals("filter-articles")) {
