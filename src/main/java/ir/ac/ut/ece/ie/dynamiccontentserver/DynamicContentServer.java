@@ -1,6 +1,7 @@
 package ir.ac.ut.ece.ie.dynamiccontentserver;
 
 import ir.ac.ut.ece.ie.controllers.ArticleController;
+import ir.ac.ut.ece.ie.controllers.Controller;
 import ir.ac.ut.ece.ie.http.HttpRequest;
 import ir.ac.ut.ece.ie.http.HttpResponse;
 import ir.ac.ut.ece.ie.services.ArticleService;
@@ -31,21 +32,11 @@ public class DynamicContentServer {
 				if (httpRequest.isStaticResource())
 					httpResponse.writeFile(path);
 				else if (httpRequest.isAction()) {
-					if (path.equals("filter-articles")) {
-						ArticleService.getInstance().setFilter(httpRequest.getPayload().get("search"));
-						httpResponse.writePage("ShowArticles", null);
-					}
-					else {
-						System.out.println(httpRequest.getPayload());
-						ArticleController.addArticle(httpRequest.getPayload());
-						httpResponse.sendNoContentResponse();
-
-					}
+					Controller.handleAction(httpRequest, httpResponse);
 				}
 				else{
 					httpResponse.writePage(path, getParams(requestHeader));
 				}
-
 			} catch (FileNotFoundException |
 					ClassNotFoundException | InstantiationException | 
 					IllegalAccessException | IllegalArgumentException | 
