@@ -18,6 +18,7 @@ public class ArticleDetails {
                 .filter(a -> a.getTitle().toLowerCase().replaceAll(" ", "-").equals(title))
                 .findFirst()
                 .orElse(null);
+        System.out.println(article.getTitle());
 
         StringBuilder citations_html = new StringBuilder();
 

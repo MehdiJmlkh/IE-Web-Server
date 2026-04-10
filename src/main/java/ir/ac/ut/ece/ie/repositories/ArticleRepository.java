@@ -24,11 +24,11 @@ public class ArticleRepository {
         try {
             ObjectMapper mapper = new ObjectMapper();
 
-            articles =
-                    mapper.readValue(
-                            new File("./src/main/resources/data/sampleArticles.json"),
-                            new TypeReference<List<Article>>() {}
-                    );
+            mapper.readValue(
+                    new File("./src/main/resources/data/sampleArticles.json"),
+                    new TypeReference<List<Article>>() {}
+            ).forEach(this::addArticle);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
