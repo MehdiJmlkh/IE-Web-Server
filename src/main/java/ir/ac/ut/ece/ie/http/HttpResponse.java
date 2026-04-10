@@ -28,6 +28,13 @@ public class HttpResponse {
         return httpResponse;
     }
 
+    public static HttpResponse created() {
+        var httpResponse = new HttpResponse();
+        String header = "HTTP1.1 201 Created \r\n";
+        httpResponse.response.add(header.getBytes());
+        return httpResponse;
+    }
+
     public HttpResponse dynamicContent(String pageName, Map<String, String> params) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
         Class<?> c = Class.forName("ir.ac.ut.ece.ie.pages." + pageName);
         Object page = c.getDeclaredConstructor().newInstance();
