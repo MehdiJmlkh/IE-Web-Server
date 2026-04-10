@@ -27,8 +27,10 @@ public class AddArticle {
                   </div>
                 """, a.getId(), a.getSlug(), a.getTitle()));
         }
+        int currentYear = java.time.Year.now().getValue();
 
         String html = loadTemplate("addArticle.html")
+                .replace("{currentYear}", String.valueOf(currentYear))
                 .replace("{articles}", articles_html.toString());
         return html.getBytes();
     }
