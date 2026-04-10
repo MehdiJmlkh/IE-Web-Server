@@ -1,7 +1,5 @@
 package ir.ac.ut.ece.ie.http;
 
-import ir.ac.ut.ece.ie.utils.HttpRequestUtil;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +8,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import ir.ac.ut.ece.ie.utils.UrlUtil;
 
@@ -21,9 +20,8 @@ public class HttpRequest {
     public HttpRequest(Socket socket) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         header = reader.readLine();
-        requestParams = HttpRequestUtil.getParams(header);
+        requestParams = extractParams(header);
         requestBody = parsePayload(readRawPayload(reader));
-        System.out.println(header);
     }
 
     public boolean isValid() {
@@ -74,11 +72,39 @@ public class HttpRequest {
     }
 
     public String getPath() {
-        return HttpRequestUtil.getPath(header);
+        StringTokenizer tokenizer = new StringTokenizer(header, " ?");
+        tokenizer.nextToken();
+        return tokenizer.nextToken().substring(1);
     }
 
     public boolean isStaticResource() {
         return UrlUtil.isStaticResource(getPath());
+    }
+
+    private Map<String, String> extractParams(String header) {
+        Map<String, String> params = new HashMap<>();
+
+        StringTokenizer tokenizer = new StringTokenizer(header, " ");
+        tokenizer.nextToken();
+
+        String path = tokenizer.nextToken();
+
+        int queryIndex = path.indexOf('?');
+        if (queryIndex == -1) {
+            return params;
+        }
+
+        String query = path.substring(queryIndex + 1);
+        String[] pairs = query.split("&");
+
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=", 2);
+            if (keyValue.length == 2) {
+                params.put(keyValue[0], keyValue[1]);
+            }
+        }
+
+        return params;
     }
 
     public Map<String, String> getRequestBody() {
