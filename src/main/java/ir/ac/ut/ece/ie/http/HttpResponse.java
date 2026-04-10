@@ -59,13 +59,18 @@ public class HttpResponse {
         }
     }
 
+    private byte[] getJoinedResponse() throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        for (byte[] arr : response) {
+            out.write(arr);
+        }
+
+        return out.toByteArray();
+    }
+
+
     public void write(OutputStream outputStream) throws IOException {
-        response.forEach(item -> {
-            try {
-                outputStream.write(item);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        outputStream.write(getJoinedResponse());
     }
 }
