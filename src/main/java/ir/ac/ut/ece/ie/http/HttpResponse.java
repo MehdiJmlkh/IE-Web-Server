@@ -35,6 +35,31 @@ public class HttpResponse {
         return httpResponse;
     }
 
+    public static HttpResponse badRequest(String message) {
+        HttpResponse httpResponse = new HttpResponse();
+
+        String statusLine = "HTTP/1.1 400 Bad Request\r\n";
+
+        String body = (message == null || message.isEmpty())
+                ? "Bad Request"
+                : message;
+
+        byte[] bodyBytes = body.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+
+        String headers =
+                "Content-Type: text/plain; charset=UTF-8\r\n" +
+                        "Content-Length: " + bodyBytes.length + "\r\n" +
+                        "Connection: close\r\n" +
+                        "\r\n";
+
+        httpResponse.response.add(statusLine.getBytes());
+        httpResponse.response.add(headers.getBytes());
+        httpResponse.response.add(bodyBytes);
+
+        return httpResponse;
+    }
+
+
     public HttpResponse dynamicContent(String pageName, Map<String, String> params) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
         Class<?> c = Class.forName("ir.ac.ut.ece.ie.pages." + pageName);
         Object page = c.getDeclaredConstructor().newInstance();

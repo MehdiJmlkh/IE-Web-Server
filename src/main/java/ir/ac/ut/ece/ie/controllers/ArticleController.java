@@ -2,6 +2,7 @@ package ir.ac.ut.ece.ie.controllers;
 
 import ir.ac.ut.ece.ie.dtos.AddArticleRequest;
 import ir.ac.ut.ece.ie.dtos.FilterArticlesRequest;
+import ir.ac.ut.ece.ie.exceptions.NotUniqueTitleException;
 import ir.ac.ut.ece.ie.http.HttpResponse;
 import ir.ac.ut.ece.ie.services.ArticleService;
 
@@ -11,7 +12,11 @@ import java.lang.reflect.InvocationTargetException;
 public class ArticleController {
 
     public HttpResponse addArticle(AddArticleRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        ArticleService.addArticle(request);
+        try {
+            ArticleService.addArticle(request);
+        } catch (NotUniqueTitleException e) {
+            return HttpResponse.badRequest("An article with this title already exists.");
+        }
         return HttpResponse.created().dynamicContent("ShowArticles", null);
     }
 
