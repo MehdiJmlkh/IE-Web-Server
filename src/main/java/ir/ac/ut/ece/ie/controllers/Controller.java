@@ -40,7 +40,7 @@ public class Controller {
                     .map(Integer::valueOf)
                     .collect(Collectors.toList());
 
-            var request = new AddArticleRequest(payload.get("title"), payload.get("abstract"), payload.get("body"), citations);
+            var request = new AddArticleRequest(payload.get("title"), Integer.valueOf(payload.get("year")), payload.get("abstract"), payload.get("body"), citations);
             return articleController.addArticle(request);
         }
     }

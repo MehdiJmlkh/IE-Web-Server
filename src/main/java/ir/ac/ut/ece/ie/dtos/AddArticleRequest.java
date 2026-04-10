@@ -4,12 +4,14 @@ import java.util.List;
 
 public class AddArticleRequest {
     private String title;
+    private Integer year;
     private String abs;
     private String body;
     private final List<Integer> citationIds;
 
-    public AddArticleRequest(String title, String abs, String body, List<Integer> citationIds) {
+    public AddArticleRequest(String title, Integer year, String abs, String body, List<Integer> citationIds) {
         this.title = title;
+        this.year = year;
         this.abs = abs;
         this.body = body;
         this.citationIds = citationIds;
@@ -29,5 +31,9 @@ public class AddArticleRequest {
 
     public List<Integer> getCitationIds() {
         return citationIds;
+    }
+
+    public Integer getYear() {
+        return year;
     }
 }

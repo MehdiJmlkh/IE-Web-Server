@@ -7,7 +7,7 @@ import ir.ac.ut.ece.ie.repositories.ArticleRepository;
 
 public class ArticleService {
     public static void addArticle(AddArticleRequest request) {
-        Article article = new Article(request.getTitle(), request.getAbs(), request.getBody(), 2000);
+        Article article = new Article(request.getTitle(), request.getAbs(), request.getBody(), request.getYear());
         article.setCitationIds(request.getCitationIds());
         ArticleRepository.getInstance().addArticle(article);
     }
