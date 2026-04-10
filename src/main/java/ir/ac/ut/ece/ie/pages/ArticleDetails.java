@@ -1,6 +1,6 @@
 package ir.ac.ut.ece.ie.pages;
 
-import ir.ac.ut.ece.ie.services.Article;
+import ir.ac.ut.ece.ie.entities.Article;
 import ir.ac.ut.ece.ie.services.ArticleService;
 
 import java.util.List;

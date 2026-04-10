@@ -1,7 +1,7 @@
 package ir.ac.ut.ece.ie.controllers;
 
 import ir.ac.ut.ece.ie.http.HttpResponse;
-import ir.ac.ut.ece.ie.services.Article;
+import ir.ac.ut.ece.ie.entities.Article;
 import ir.ac.ut.ece.ie.services.ArticleService;
 
 import java.io.IOException;

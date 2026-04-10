@@ -1,16 +1,9 @@
 package ir.ac.ut.ece.ie.pages;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Comparator;
 import java.util.Map;
 
 import ir.ac.ut.ece.ie.services.ArticleService;
-import ir.ac.ut.ece.ie.services.Article;
+import ir.ac.ut.ece.ie.entities.Article;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static ir.ac.ut.ece.ie.utils.FileUtil.loadTemplate;
 

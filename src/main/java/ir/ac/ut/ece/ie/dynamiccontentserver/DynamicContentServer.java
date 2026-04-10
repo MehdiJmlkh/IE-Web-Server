@@ -29,11 +29,10 @@ public class DynamicContentServer {
 				continue;
 			String path = httpRequest.getPath();
 			try {
-				if (httpRequest.isStaticResource())
-					httpResponse.writeFile(path);
-				else if (httpRequest.isAction()) {
+				if (httpRequest.isAction())
 					Controller.handleAction(httpRequest, httpResponse);
-				}
+				else if (httpRequest.isStaticResource())
+					httpResponse.writeFile(path);
 				else{
 					httpResponse.writePage(path, getParams(requestHeader));
 				}

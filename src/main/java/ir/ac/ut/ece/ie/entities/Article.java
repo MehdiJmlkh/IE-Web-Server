@@ -1,4 +1,4 @@
-package ir.ac.ut.ece.ie.services;
+package ir.ac.ut.ece.ie.entities;
 
 public class Article implements Comparable<Article> {
     private final String title;
