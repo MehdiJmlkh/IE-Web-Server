@@ -6,6 +6,7 @@
 }
 
 .abstract__header,
-.body__header {
+.body__header,
+.citation__header{
     color: #555;
 }

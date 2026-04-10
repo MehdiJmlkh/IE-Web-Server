@@ -17,7 +17,7 @@ public class Controller {
     private final ArticleController articleController = new ArticleController();
 
     public HttpResponse handle(HttpRequest httpRequest) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        var method = httpRequest.getMethod();
+        HttpMethod method = httpRequest.getMethod();
         if (method == HttpMethod.POST)
             return handlePost(httpRequest);
         else if (method == HttpMethod.GET) {

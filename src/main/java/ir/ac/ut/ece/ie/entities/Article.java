@@ -1,5 +1,6 @@
 package ir.ac.ut.ece.ie.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Article implements Comparable<Article> {
@@ -8,7 +9,7 @@ public class Article implements Comparable<Article> {
     private final String articleAbstract;
     private final String body;
     private final int year;
-    private List<Integer> citationIds;
+    private List<Integer> citationIds = new ArrayList<>();
 
 
     public Article(String title, String articleAbstract, String body, int year) {

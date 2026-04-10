@@ -19,11 +19,25 @@ public class ArticleDetails {
                 .findFirst()
                 .orElse(null);
 
+        StringBuilder citations_html = new StringBuilder();
+
+        for (Integer citationId: article.getCitationIds()) {
+            Article citation = ArticleRepository.getInstance().findById(citationId);
+            String slug = citation.getTitle().toLowerCase().replaceAll(" ", "-");
+            citations_html.append(String.format("""
+                  <div class="article">
+                        <a href="ArticleDetails?title=%s" class="article__header">%s</a>
+                  </div>
+                """, slug, citation.getTitle()));
+        }
+
+
         String html = loadTemplate("articleDetails.html")
                 .replace("{title}", article.getTitle())
                 .replace("{year}",  String.valueOf(article.getYear()))
                 .replace("{abstract}", article.getAbstract())
-                .replace("{body}", "<p>" + article.getBody().replace("\n", "</p><p>") + "</p>");
+                .replace("{body}", "<p>" + article.getBody().replace("\n", "</p><p>") + "</p>")
+                .replace("{citations}", citations_html);
         return html.getBytes();
     }
 }
