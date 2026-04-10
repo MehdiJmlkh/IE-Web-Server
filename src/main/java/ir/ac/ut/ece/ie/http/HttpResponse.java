@@ -11,10 +11,8 @@ import static ir.ac.ut.ece.ie.utils.UrlUtil.getFileExtension;
 
 public class HttpResponse {
     private List<byte[]> response = new ArrayList<>();
-    private final OutputStream outputStream;
 
-    public HttpResponse(OutputStream outputStream) {
-        this.outputStream = outputStream;
+    public HttpResponse() {
     }
 
     private static String createHeader(Long contentLength, String textType) {
@@ -26,7 +24,6 @@ public class HttpResponse {
     public void sendNoContentResponse() throws IOException {
         String header = "HTTP/1.1 204 No Content\nConnection: close\n";
         response.add(header.getBytes());
-        write();
     }
 
     public void writePage(String pageName, Map<String, String> params) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
@@ -39,7 +36,6 @@ public class HttpResponse {
 
         response.add(header.getBytes());
         response.add(data);
-        write();
     }
 
     public void writeFile(String fileName) throws IOException {
@@ -60,11 +56,10 @@ public class HttpResponse {
             }
 
             response.add(buffer.toByteArray());
-            write();
         }
     }
 
-    private void write() throws IOException {
+    public void write(OutputStream outputStream) throws IOException {
         response.forEach(item -> {
             try {
                 outputStream.write(item);
