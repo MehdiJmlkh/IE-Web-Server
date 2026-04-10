@@ -7,20 +7,24 @@ import ir.ac.ut.ece.ie.exceptions.NotUniqueTitleException;
 import ir.ac.ut.ece.ie.repositories.ArticleRepository;
 
 public class ArticleService {
-    public static void addArticle(AddArticleRequest request) throws NotUniqueTitleException {
-        var article = ArticleRepository.getInstance().getArticles().stream()
+    private final ArticleRepository articleRepository = ArticleRepository.getInstance();
+
+    public void addArticle(AddArticleRequest request) throws NotUniqueTitleException {
+        var article = articleRepository.getArticles().stream()
                 .filter(a -> a.getTitle().equals(request.getTitle()))
                 .findFirst()
                 .orElse(null);
+
         if (article != null) {
             throw new NotUniqueTitleException();
         }
-        article = new Article(request.getTitle(), request.getAbs(), request.getBody(), request.getYear());
-        article.setCitationIds(request.getCitationIds());
-        ArticleRepository.getInstance().addArticle(article);
+
+        Article newArticle = new Article(request.getTitle(), request.getAbs(), request.getBody(), request.getYear());
+        newArticle.setCitationIds(request.getCitationIds());
+        articleRepository.addArticle(newArticle);
     }
 
-    public static void filterArticles(FilterArticlesRequest request) {
-        ArticleRepository.getInstance().setFilter(request.getSearchInput());
+    public void filterArticles(FilterArticlesRequest request) {
+        articleRepository.setFilter(request.getSearchInput());
     }
 }

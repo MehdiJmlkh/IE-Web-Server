@@ -10,10 +10,11 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 public class ArticleController {
+    private final ArticleService articleService = new ArticleService();
 
     public HttpResponse addArticle(AddArticleRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         try {
-            ArticleService.addArticle(request);
+            articleService.addArticle(request);
         } catch (NotUniqueTitleException e) {
             return HttpResponse.badRequest("An article with this title already exists.");
         }
@@ -21,7 +22,7 @@ public class ArticleController {
     }
 
     public HttpResponse filterArticles(FilterArticlesRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        ArticleService.filterArticles(request);
+        articleService.filterArticles(request);
         return HttpResponse.ok().dynamicContent("ShowArticles", null);
     }
 }
