@@ -47,6 +47,9 @@ public class Controller {
 
     private HttpResponse handleGet(HttpRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         String path = request.getPath();
+        if (path.isEmpty()) {
+            return HttpResponse.ok().dynamicContent("ShowArticles", request.getRequestParams());
+        }
 
         if (UrlUtil.isStaticResource(path)) {
             return HttpResponse.ok().staticContent(path);
