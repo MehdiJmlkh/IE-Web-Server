@@ -41,10 +41,10 @@ public class Controller {
         String path = request.getPath();
 
         if (UrlUtil.isStaticResource(path)) {
-            return HttpResponse.staticContent(path);
+            return HttpResponse.ok().staticContent(path);
         }
         else{
-            return HttpResponse.dynamicContent(path, request.getRequestParams());
+            return HttpResponse.ok().dynamicContent(path, request.getRequestParams());
         }
     }
 }

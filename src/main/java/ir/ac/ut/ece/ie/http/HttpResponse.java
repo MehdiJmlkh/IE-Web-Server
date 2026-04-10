@@ -10,10 +10,7 @@ import java.util.Map;
 import static ir.ac.ut.ece.ie.utils.UrlUtil.getFileExtension;
 
 public class HttpResponse {
-    private List<byte[]> response = new ArrayList<>();
-
-    public HttpResponse() {
-    }
+    private final List<byte[]> response = new ArrayList<>();
 
     public static HttpResponse noContent() throws IOException {
         var httpResponse = new HttpResponse();
@@ -24,28 +21,31 @@ public class HttpResponse {
         return httpResponse;
     }
 
-    public static HttpResponse dynamicContent(String pageName, Map<String, String> params) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
+    public static HttpResponse ok() {
         var httpResponse = new HttpResponse();
+        String header = "HTTP1.1 200 OK \r\n";
+        httpResponse.response.add(header.getBytes());
+        return httpResponse;
+    }
 
+    public HttpResponse dynamicContent(String pageName, Map<String, String> params) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
         Class<?> c = Class.forName("ir.ac.ut.ece.ie.pages." + pageName);
         Object page = c.getDeclaredConstructor().newInstance();
         Method method = c.getMethod("pageBody", Map.class);
         byte[] data = (byte[]) method.invoke(page, params);
 
-        String header = createHeader((long) data.length, "html");
+        String header = createContentHeader((long) data.length, "html");
 
-        httpResponse.response.add(header.getBytes());
-        httpResponse.response.add(data);
+        response.add(header.getBytes());
+        response.add(data);
 
-        return httpResponse;
+        return this;
     }
 
-    public static HttpResponse staticContent(String fileName) throws IOException {
-        var httpResponse = new HttpResponse();
-
+    public HttpResponse staticContent(String fileName) throws IOException {
         File file = new File("./src/main/resources/" + fileName);
 
-        String header = createHeader(file.length(), getFileExtension(fileName));
+        String header = createContentHeader(file.length(), getFileExtension(fileName));
 
         try (FileInputStream fis = new FileInputStream(file);
              ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
@@ -59,9 +59,10 @@ public class HttpResponse {
                 buffer.write(data, 0, size);
             }
 
-            httpResponse.response.add(buffer.toByteArray());
+            response.add(buffer.toByteArray());
         }
-        return httpResponse;
+
+        return this;
     }
 
     public byte[] getResponse() throws IOException {
@@ -74,8 +75,8 @@ public class HttpResponse {
         return out.toByteArray();
     }
 
-    private static String createHeader(Long contentLength, String textType) {
-        return "HTTP1.1 200 OK \r\nContent-Type: text/" + textType + "\r\nContent.Length: "
+    private static String createContentHeader(Long contentLength, String textType) {
+        return "Content-Type: text/" + textType + "\r\nContent.Length: "
                 + contentLength
                 + "\r\n\r\n";
     }
