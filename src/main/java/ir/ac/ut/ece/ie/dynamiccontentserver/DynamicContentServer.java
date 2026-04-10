@@ -16,11 +16,12 @@ public class DynamicContentServer {
 		while ((socket = serverSocket.accept()) != null) {
 			HttpRequest httpRequest = new HttpRequest(socket);
 
-			if (httpRequest.getHeader() == null)
+			if (!httpRequest.isValid())
 				continue;
 			try {
 				var httpResponse = Controller.handle(httpRequest);
 				socket.getOutputStream().write(httpResponse.getResponse());
+
 			} catch (FileNotFoundException |
 					ClassNotFoundException | InstantiationException | 
 					IllegalAccessException | IllegalArgumentException | 

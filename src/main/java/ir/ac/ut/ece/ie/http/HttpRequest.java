@@ -25,6 +25,10 @@ public class HttpRequest {
         requestBody = parsePayload(readRawPayload(reader));
     }
 
+    public boolean isValid() {
+        return header != null;
+    }
+
     public boolean isAction() {
         return !requestBody.isEmpty();
     }
@@ -68,9 +72,6 @@ public class HttpRequest {
 
     public boolean isStaticResource() {
         return UrlUtil.isStaticResource(getPath());
-    }
-    public String getHeader() {
-        return header;
     }
 
     public Map<String, String> getRequestBody() {
