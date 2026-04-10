@@ -30,7 +30,10 @@ public class ShowArticles {
                 """, a.getSlug(), a.getTitle(), a.getCitationIds().size(), a.getYear(), abstractSnippet));
         }
 
+        String searchInput = ArticleRepository.getInstance().getSearchInput();
+
         String html = loadTemplate("showArticles.html")
+                .replace("{search-input}", searchInput != null ? searchInput : "")
                 .replace("{articles}", articles_html.toString());
         return html.getBytes();
     }

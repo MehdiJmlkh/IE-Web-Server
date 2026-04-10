@@ -76,6 +76,10 @@ public class ArticleRepository {
         this.searchInput = searchInput.toLowerCase();
     }
 
+    public String getSearchInput() {
+        return searchInput;
+    }
+
     public Article findById(Integer id) {
         return articles.stream()
                 .filter(a -> a.getId().equals(id))

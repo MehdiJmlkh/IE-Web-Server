@@ -15,8 +15,8 @@ public class ArticleController {
         return HttpResponse.created().dynamicContent("ShowArticles", null);
     }
 
-    public HttpResponse filterArticles(FilterArticlesRequest request) throws IOException {
+    public HttpResponse filterArticles(FilterArticlesRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         ArticleService.filterArticles(request);
-        return HttpResponse.noContent();
+        return HttpResponse.ok().dynamicContent("ShowArticles", null);
     }
 }
