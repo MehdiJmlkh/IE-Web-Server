@@ -10,15 +10,14 @@ import static ir.ac.ut.ece.ie.utils.FileUtil.loadTemplate;
 
 public class ArticleDetails {
     public byte[] pageBody(Map<String, String> params) {
-        String title = params.get("title");
+        String slug = params.get("title");
 
         List<Article> articles = ArticleRepository.getInstance().getArticles();
 
         Article article = articles.stream()
-                .filter(a -> a.getTitle().toLowerCase().replaceAll(" ", "-").equals(title))
+                .filter(a -> a.getSlug().equals(slug))
                 .findFirst()
                 .orElse(null);
-        System.out.println(article.getTitle());
 
         StringBuilder citations_html = new StringBuilder();
 

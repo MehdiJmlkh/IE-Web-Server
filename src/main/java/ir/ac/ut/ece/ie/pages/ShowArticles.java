@@ -26,7 +26,7 @@ public class ShowArticles {
                   <div>%s</div>
                   <p class="article__abstract">%s</p>
                 </div>
-                """, a.getSlug(), a.getTitle(), a.getYear(),abstractSnippet));
+                """, a.getSlug(), a.getTitle(), a.getYear(), abstractSnippet));
         }
 
         String html = loadTemplate("showArticles.html")
