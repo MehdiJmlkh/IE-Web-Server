@@ -3,11 +3,14 @@ package ir.ac.ut.ece.ie.http;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static ir.ac.ut.ece.ie.utils.UrlUtil.getFileExtension;
 
 public class HttpResponse {
+    private List<byte[]> response = new ArrayList<>();
     private final OutputStream outputStream;
 
     public HttpResponse(OutputStream outputStream) {
@@ -22,7 +25,8 @@ public class HttpResponse {
 
     public void sendNoContentResponse() throws IOException {
         String header = "HTTP/1.1 204 No Content\nConnection: close\n";
-        outputStream.write(header.getBytes());
+        response.add(header.getBytes());
+        write();
     }
 
     public void writePage(String pageName, Map<String, String> params) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
@@ -33,8 +37,9 @@ public class HttpResponse {
 
         String header = createHeader((long) data.length, "html");
 
-        outputStream.write(header.getBytes());
-        outputStream.write(data);
+        response.add(header.getBytes());
+        response.add(data);
+        write();
     }
 
     public void writeFile(String fileName) throws IOException {
@@ -54,7 +59,18 @@ public class HttpResponse {
                 buffer.write(data, 0, size);
             }
 
-            outputStream.write(buffer.toByteArray());
+            response.add(buffer.toByteArray());
+            write();
         }
+    }
+
+    private void write() throws IOException {
+        response.forEach(item -> {
+            try {
+                outputStream.write(item);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }
