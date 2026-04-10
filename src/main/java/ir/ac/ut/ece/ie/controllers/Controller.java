@@ -11,7 +11,17 @@ import java.lang.reflect.InvocationTargetException;
 
 
 public class Controller {
-    public HttpResponse handleAction(HttpRequest httpRequest) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public HttpResponse handle(HttpRequest httpRequest) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        var method = httpRequest.getMethod();
+        if (method == HttpMethod.POST)
+            return handlePost(httpRequest);
+        else if (method == HttpMethod.GET) {
+            return handleGet(httpRequest);
+        }
+        return null;
+    }
+
+    private HttpResponse handlePost(HttpRequest httpRequest) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         String command = httpRequest.getPath();
         var payload = httpRequest.getRequestBody();
         if (command.equals("filter-articles")) {
@@ -24,17 +34,14 @@ public class Controller {
         }
     }
 
-    public HttpResponse handle(HttpRequest httpRequest) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        String path = httpRequest.getPath();
+    private HttpResponse handleGet(HttpRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        String path = request.getPath();
 
-        var method = httpRequest.getMethod();
-        if (method == HttpMethod.POST)
-            return handleAction(httpRequest);
-        else if (httpRequest.isStaticResource()) {
+        if (request.isStaticResource()) {
             return HttpResponse.writeFile(path);
         }
         else{
-            return HttpResponse.writePage(path, httpRequest.getRequestParams());
+            return HttpResponse.writePage(path, request.getRequestParams());
         }
     }
 }
