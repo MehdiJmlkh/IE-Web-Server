@@ -3,15 +3,17 @@ package ir.ac.ut.ece.ie.pages;
 import ir.ac.ut.ece.ie.entities.Article;
 import ir.ac.ut.ece.ie.repositories.ArticleRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static ir.ac.ut.ece.ie.utils.FileUtil.loadTemplate;
 
 public class AddArticle {
     public byte[] pageBody(Map<String, String> params) {
         List<Article> articles = ArticleRepository.getInstance()
-                .getFilteredArticles();
+                .getArticles().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
 
         StringBuilder articles_html = new StringBuilder();
 
