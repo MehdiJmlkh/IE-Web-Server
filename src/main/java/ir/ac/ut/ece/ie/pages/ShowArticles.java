@@ -1,7 +1,7 @@
 package ir.ac.ut.ece.ie.pages;
 import java.util.Map;
 
-import ir.ac.ut.ece.ie.services.ArticleService;
+import ir.ac.ut.ece.ie.repositories.ArticleRepository;
 import ir.ac.ut.ece.ie.entities.Article;
 import java.util.List;
 
@@ -10,7 +10,7 @@ import static ir.ac.ut.ece.ie.utils.FileUtil.loadTemplate;
 public class ShowArticles {
 
     public byte[] pageBody(Map<String, String> params) {
-        List<Article> articles = ArticleService.getInstance()
+        List<Article> articles = ArticleRepository.getInstance()
                 .getFilteredArticles();
 
         StringBuilder articles_html = new StringBuilder();

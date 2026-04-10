@@ -1,4 +1,4 @@
-package ir.ac.ut.ece.ie.services;
+package ir.ac.ut.ece.ie.repositories;
 
 import ir.ac.ut.ece.ie.entities.Article;
 
@@ -7,13 +7,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ArticleService {
+public class ArticleRepository {
 
-    private static final ArticleService instance = new ArticleService();
+    private static final ArticleRepository instance = new ArticleRepository();
     private List<Article> articles = new ArrayList<>();
     private String searchInput = null;
 
-    private ArticleService() {
+    private ArticleRepository() {
         articles.add(new Article(
                 "Assessing and Understanding Creativity in  Large Language Models",
                 "In the field of natural language processing, the rapid development of large language model (LLM) has attracted increasing attention. LLMs have shown a high level of creativity in various tasks, but the methods for assessing such creativity are inadequate. Assessment of LLM creativity needs to consider differences from humans, requiring multiple dimensional measurement while balancing accuracy and efficiency. This paper aims to establish an efficient framework for assessing the level of creativity in LLMs. By adapting the modified Torrance tests of creative thinking, the research evaluates the creative performance of various LLMs across 7 tasks, emphasizing 4 criteria including fluency, flexibility, originality, and elaboration. In this context, we develop a comprehensive dataset of 700 questions for testing and an LLM-based evaluation method. In addition, this study presents a novel analysis of LLMs′ responses to diverse prompts and role-play situations. We found that the creativity of LLMs primarily falls short in originality, while excelling in elaboration. In addition, the use of prompts and role-play settings of the model significantly influence creativity. Additionally, the experimental results also indicate that collaboration among multiple LLMs can enhance originality. Notably, our findings reveal a consensus between human evaluations and LLMs regarding the personality traits that influence creativity. The findings underscore the significant impact of LLM design on creativity and bridge artificial intelligence and human creativity, offering insights into LLMs′ creativity and potential applications.",
@@ -49,7 +49,7 @@ public class ArticleService {
         ));
     }
 
-    public static ArticleService getInstance() {
+    public static ArticleRepository getInstance() {
         return instance;
     }
 

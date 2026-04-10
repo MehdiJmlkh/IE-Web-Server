@@ -1,7 +1,7 @@
 package ir.ac.ut.ece.ie.pages;
 
 import ir.ac.ut.ece.ie.entities.Article;
-import ir.ac.ut.ece.ie.services.ArticleService;
+import ir.ac.ut.ece.ie.repositories.ArticleRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,7 @@ public class ArticleDetails {
     public byte[] pageBody(Map<String, String> params) {
         String title = params.get("title");
 
-        List<Article> articles = ArticleService.getInstance().getArticles();
+        List<Article> articles = ArticleRepository.getInstance().getArticles();
 
         Article article = articles.stream()
                 .filter(a -> a.getTitle().toLowerCase().replaceAll(" ", "-").equals(title))
