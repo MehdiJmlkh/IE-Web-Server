@@ -1,19 +1,13 @@
 package ir.ac.ut.ece.ie.dynamiccontentserver;
 
-import ir.ac.ut.ece.ie.controllers.ArticleController;
 import ir.ac.ut.ece.ie.controllers.Controller;
 import ir.ac.ut.ece.ie.http.HttpRequest;
 import ir.ac.ut.ece.ie.http.HttpResponse;
-import ir.ac.ut.ece.ie.services.ArticleService;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import static ir.ac.ut.ece.ie.utils.HttpRequestUtil.getParams;
-import static ir.ac.ut.ece.ie.utils.HttpRequestUtil.getPath;
-import static ir.ac.ut.ece.ie.utils.UrlUtil.isStaticResource;
 
 public class DynamicContentServer {
 	public void start() throws IOException {
@@ -27,15 +21,8 @@ public class DynamicContentServer {
 			String requestHeader = httpRequest.getHeader();
 			if (requestHeader == null)
 				continue;
-			String path = httpRequest.getPath();
 			try {
-				if (httpRequest.isAction())
-					Controller.handleAction(httpRequest, httpResponse);
-				else if (httpRequest.isStaticResource())
-					httpResponse.writeFile(path);
-				else{
-					httpResponse.writePage(path, getParams(requestHeader));
-				}
+				Controller.handle(httpRequest, httpResponse);
 			} catch (FileNotFoundException |
 					ClassNotFoundException | InstantiationException | 
 					IllegalAccessException | IllegalArgumentException | 
