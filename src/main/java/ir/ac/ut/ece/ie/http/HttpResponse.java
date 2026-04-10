@@ -21,7 +21,7 @@ public class HttpResponse {
                 + "\r\n\r\n";
     }
 
-    public void sendNoContentResponse() throws IOException {
+    public void noContent() throws IOException {
         String header = "HTTP/1.1 204 No Content\nConnection: close\n";
         response.add(header.getBytes());
     }

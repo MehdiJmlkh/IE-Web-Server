@@ -16,13 +16,12 @@ public class DynamicContentServer {
 		Socket socket;
 		while ((socket = serverSocket.accept()) != null) {
 			HttpRequest httpRequest = new HttpRequest(socket);
-			HttpResponse httpResponse = new HttpResponse();
 
 			String requestHeader = httpRequest.getHeader();
 			if (requestHeader == null)
 				continue;
 			try {
-				Controller.handle(httpRequest, httpResponse);
+				var httpResponse = Controller.handle(httpRequest);
 				httpResponse.write(socket.getOutputStream());
 			} catch (FileNotFoundException |
 					ClassNotFoundException | InstantiationException | 

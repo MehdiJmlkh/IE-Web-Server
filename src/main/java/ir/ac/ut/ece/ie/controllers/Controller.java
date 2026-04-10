@@ -10,28 +10,33 @@ import java.lang.reflect.InvocationTargetException;
 
 
 public class Controller {
-    public static void handleAction(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public static HttpResponse handleAction(HttpRequest httpRequest) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         String command = httpRequest.getPath();
         var payload = httpRequest.getRequestBody();
         if (command.equals("filter-articles")) {
             var request = new FilterArticlesRequest(payload.get("search"));
-            ArticleController.filterArticles(request, httpResponse);
+            return ArticleController.filterArticles(request);
         }
         else {
             var request = new AddArticleRequest(payload.get("title"), payload.get("abstract"), payload.get("body"));
-            ArticleController.addArticle(request, httpResponse);
+            return ArticleController.addArticle(request);
         }
     }
 
-    public static void handle(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public static HttpResponse handle(HttpRequest httpRequest) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         String path = httpRequest.getPath();
 
         if (httpRequest.isAction())
-            Controller.handleAction(httpRequest, httpResponse);
-        else if (httpRequest.isStaticResource())
+            return Controller.handleAction(httpRequest);
+        else if (httpRequest.isStaticResource()) {
+            var httpResponse = new HttpResponse();
             httpResponse.writeFile(path);
+            return httpResponse;
+        }
         else{
+            var httpResponse = new HttpResponse();
             httpResponse.writePage(path, httpRequest.getRequestParams());
+            return httpResponse;
         }
     }
 }
