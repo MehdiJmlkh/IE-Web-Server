@@ -24,14 +24,12 @@ public class ArticleDetails {
 
         for (Integer citationId: article.getCitationIds()) {
             Article citation = ArticleRepository.getInstance().findById(citationId);
-            String slug = citation.getTitle().toLowerCase().replaceAll(" ", "-");
             citations_html.append(String.format("""
                   <div class="article">
                         <a href="ArticleDetails?title=%s" class="article__header">%s</a>
                   </div>
-                """, slug, citation.getTitle()));
+                """, citation.getSlug(), citation.getTitle()));
         }
-
 
         String html = loadTemplate("articleDetails.html")
                 .replace("{title}", article.getTitle())

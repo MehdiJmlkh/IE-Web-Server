@@ -16,11 +16,6 @@ public class AddArticle {
         StringBuilder articles_html = new StringBuilder();
 
         for (Article a : articles) {
-            String slug = a.getTitle().toLowerCase().replaceAll(" ", "-");
-            String abstractSnippet = a.getAbstract().length() > 400
-                    ? a.getAbstract().substring(0, 400) + "..."
-                    : a.getAbstract();
-
             articles_html.append(String.format("""
                   <div class="article">
                     <input class="form-check-input article__checkbox" type="checkbox" name="citations[] value=%s"/>
@@ -28,7 +23,7 @@ public class AddArticle {
                         <a href="ArticleDetails?title=%s" class="article__header">%s</a>
                     </label>
                   </div>
-                """, a.getId(), slug, a.getTitle()));
+                """, a.getId(), a.getSlug(), a.getTitle()));
         }
 
         String html = loadTemplate("addArticle.html")

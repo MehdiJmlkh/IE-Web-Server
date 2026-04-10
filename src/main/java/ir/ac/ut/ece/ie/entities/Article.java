@@ -60,4 +60,8 @@ public class Article implements Comparable<Article> {
     public void setCitationIds(List<Integer> citationIds) {
         this.citationIds = citationIds;
     }
+
+    public String getSlug() {
+         return title.toLowerCase().replaceAll(" ", "-");
+    }
 }

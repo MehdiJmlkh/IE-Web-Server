@@ -16,7 +16,6 @@ public class ShowArticles {
         StringBuilder articles_html = new StringBuilder();
 
         for (Article a : articles) {
-            String slug = a.getTitle().toLowerCase().replaceAll(" ", "-");
             String abstractSnippet = a.getAbstract().length() > 400
                     ? a.getAbstract().substring(0, 400) + "..."
                     : a.getAbstract();
@@ -27,7 +26,7 @@ public class ShowArticles {
                   <div>%s</div>
                   <p class="article__abstract">%s</p>
                 </div>
-                """, slug, a.getTitle(), a.getYear(),abstractSnippet));
+                """, a.getSlug(), a.getTitle(), a.getYear(),abstractSnippet));
         }
 
         String html = loadTemplate("showArticles.html")
