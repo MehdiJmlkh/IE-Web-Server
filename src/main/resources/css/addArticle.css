@@ -9,3 +9,21 @@
 .form__btn {
     margin-top: 15px;
 }
+
+.article {
+    margin: 8px 0;
+}
+
+.form-label {
+    font-size: 1.1rem;
+}
+
+.article__header {
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
+.article__checkbox {
+    transform: scale(1.5);
+    margin-right: 6px;
+}

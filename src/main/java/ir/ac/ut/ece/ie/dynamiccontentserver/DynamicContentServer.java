@@ -2,6 +2,7 @@ package ir.ac.ut.ece.ie.dynamiccontentserver;
 
 import ir.ac.ut.ece.ie.controllers.Controller;
 import ir.ac.ut.ece.ie.http.HttpRequest;
+import ir.ac.ut.ece.ie.http.HttpResponse;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +22,7 @@ public class DynamicContentServer {
 			if (!httpRequest.isValid())
 				continue;
 			try {
-				var httpResponse = controller.handle(httpRequest);
+				HttpResponse httpResponse = controller.handle(httpRequest);
 				socket.getOutputStream().write(httpResponse.getResponse());
 
 			} catch (FileNotFoundException |

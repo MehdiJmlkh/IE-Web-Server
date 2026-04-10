@@ -9,6 +9,8 @@ import ir.ac.ut.ece.ie.utils.UrlUtil;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class Controller {
@@ -32,7 +34,13 @@ public class Controller {
             return articleController.filterArticles(request);
         }
         else {
-            var request = new AddArticleRequest(payload.get("title"), payload.get("abstract"), payload.get("body"));
+            List<Integer> citations = payload.keySet().stream()
+                    .filter(s -> s.startsWith("citations[]"))
+                    .map(s-> s.split("=")[1])
+                    .map(Integer::valueOf)
+                    .collect(Collectors.toList());
+
+            var request = new AddArticleRequest(payload.get("title"), payload.get("abstract"), payload.get("body"), citations);
             return articleController.addArticle(request);
         }
     }
