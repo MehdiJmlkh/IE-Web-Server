@@ -10,12 +10,12 @@ import java.lang.reflect.InvocationTargetException;
 
 public class ArticleController {
 
-    public static HttpResponse addArticle(AddArticleRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public HttpResponse addArticle(AddArticleRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         ArticleService.addArticle(request);
         return HttpResponse.writePage("ShowArticles", null);
     }
 
-    public static HttpResponse filterArticles(FilterArticlesRequest request) throws IOException {
+    public HttpResponse filterArticles(FilterArticlesRequest request) throws IOException {
         ArticleService.filterArticles(request);
         return HttpResponse.noContent();
     }

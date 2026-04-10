@@ -11,6 +11,8 @@ import java.lang.reflect.InvocationTargetException;
 
 
 public class Controller {
+    private final ArticleController articleController = new ArticleController();
+
     public HttpResponse handle(HttpRequest httpRequest) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         var method = httpRequest.getMethod();
         if (method == HttpMethod.POST)
@@ -26,11 +28,11 @@ public class Controller {
         var payload = httpRequest.getRequestBody();
         if (command.equals("filter-articles")) {
             var request = new FilterArticlesRequest(payload.get("search"));
-            return ArticleController.filterArticles(request);
+            return articleController.filterArticles(request);
         }
         else {
             var request = new AddArticleRequest(payload.get("title"), payload.get("abstract"), payload.get("body"));
-            return ArticleController.addArticle(request);
+            return articleController.addArticle(request);
         }
     }
 
