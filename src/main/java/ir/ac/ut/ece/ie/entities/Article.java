@@ -1,20 +1,25 @@
 package ir.ac.ut.ece.ie.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Article implements Comparable<Article> {
     private Integer id;
-    private final String title;
-    private final String articleAbstract;
-    private final String body;
-    private final int year;
+    private String title;
+
+    @JsonProperty("abs")
+    private String abs;
+    private String body;
+    private int year;
     private List<Integer> citationIds = new ArrayList<>();
 
+    public Article() {}
 
-    public Article(String title, String articleAbstract, String body, int year) {
+    public Article(String title, String abs, String body, int year) {
         this.title = title;
-        this.articleAbstract = articleAbstract;
+        this.abs = abs;
         this.body = body;
         this.year = year;
     }
@@ -32,7 +37,7 @@ public class Article implements Comparable<Article> {
     }
 
     public String getAbstract() {
-        return articleAbstract;
+        return abs;
     }
 
     public String getBody() {
