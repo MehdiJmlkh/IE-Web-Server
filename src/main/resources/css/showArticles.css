@@ -49,3 +49,11 @@
 .navbar__btn {
     margin-left: 10px;;
 }
+
+.article__citation {
+    white-space: nowrap;
+    background-color: var(--secondary-color);
+    padding: 5px;
+    margin-left: 5px;
+    border-radius: 10px;
+}

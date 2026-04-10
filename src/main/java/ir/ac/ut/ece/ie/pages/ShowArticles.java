@@ -23,10 +23,11 @@ public class ShowArticles {
             articles_html.append(String.format("""
                 <div class="article">
                   <a href="ArticleDetails?title=%s" class="article__header">%s</a>
+                  <span class="article__citation"> Cited by %d</span>
                   <div>%s</div>
                   <p class="article__abstract">%s</p>
                 </div>
-                """, a.getSlug(), a.getTitle(), a.getYear(), abstractSnippet));
+                """, a.getSlug(), a.getTitle(), a.getCitationIds().size(), a.getYear(), abstractSnippet));
         }
 
         String html = loadTemplate("showArticles.html")
