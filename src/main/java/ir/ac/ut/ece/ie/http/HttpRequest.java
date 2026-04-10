@@ -15,16 +15,16 @@ import ir.ac.ut.ece.ie.utils.UrlUtil;
 
 public class HttpRequest {
     private final String header;
-    Map<String, String> payload;
+    Map<String, String> requestBody;
 
     public HttpRequest(Socket socket) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         header = reader.readLine();
-        payload = parsePayload(readRawPayload(reader));
+        requestBody = parsePayload(readRawPayload(reader));
     }
 
     public boolean isAction() {
-        return !payload.isEmpty();
+        return !requestBody.isEmpty();
     }
 
     private String readRawPayload(BufferedReader reader) throws IOException {
@@ -71,7 +71,7 @@ public class HttpRequest {
         return header;
     }
 
-    public Map<String, String> getPayload() {
-        return payload;
+    public Map<String, String> getRequestBody() {
+        return requestBody;
     }
 }
