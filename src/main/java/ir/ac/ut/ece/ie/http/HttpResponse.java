@@ -64,7 +64,7 @@ public class HttpResponse {
         return httpResponse;
     }
 
-    private byte[] getJoinedResponse() throws IOException {
+    public byte[] getResponse() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         for (byte[] arr : response) {
@@ -72,11 +72,6 @@ public class HttpResponse {
         }
 
         return out.toByteArray();
-    }
-
-
-    public void write(OutputStream outputStream) throws IOException {
-        outputStream.write(getJoinedResponse());
     }
 
     private static String createHeader(Long contentLength, String textType) {

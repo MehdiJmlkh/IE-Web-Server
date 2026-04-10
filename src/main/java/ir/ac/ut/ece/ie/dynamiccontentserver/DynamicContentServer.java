@@ -2,7 +2,6 @@ package ir.ac.ut.ece.ie.dynamiccontentserver;
 
 import ir.ac.ut.ece.ie.controllers.Controller;
 import ir.ac.ut.ece.ie.http.HttpRequest;
-import ir.ac.ut.ece.ie.http.HttpResponse;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -17,12 +16,11 @@ public class DynamicContentServer {
 		while ((socket = serverSocket.accept()) != null) {
 			HttpRequest httpRequest = new HttpRequest(socket);
 
-			String requestHeader = httpRequest.getHeader();
-			if (requestHeader == null)
+			if (httpRequest.getHeader() == null)
 				continue;
 			try {
 				var httpResponse = Controller.handle(httpRequest);
-				httpResponse.write(socket.getOutputStream());
+				socket.getOutputStream().write(httpResponse.getResponse());
 			} catch (FileNotFoundException |
 					ClassNotFoundException | InstantiationException | 
 					IllegalAccessException | IllegalArgumentException | 
