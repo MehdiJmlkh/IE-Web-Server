@@ -1,6 +1,7 @@
 package ir.ac.ut.ece.ie.controllers;
 
 import ir.ac.ut.ece.ie.dtos.AddArticleRequest;
+import ir.ac.ut.ece.ie.dtos.FilterArticlesRequest;
 import ir.ac.ut.ece.ie.http.HttpResponse;
 import ir.ac.ut.ece.ie.entities.Article;
 import ir.ac.ut.ece.ie.services.ArticleService;
@@ -17,8 +18,8 @@ public class ArticleController {
     }
 
 
-    public static void filterArticles(Map<String, String> payload, HttpResponse httpResponse) throws IOException {
-        ArticleService.getInstance().setFilter(payload.get("search"));
+    public static void filterArticles(FilterArticlesRequest request, HttpResponse httpResponse) throws IOException {
+        ArticleService.getInstance().setFilter(request.getSearchInput());
         httpResponse.sendNoContentResponse();
     }
 }
