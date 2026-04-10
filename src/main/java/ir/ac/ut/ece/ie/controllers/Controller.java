@@ -29,14 +29,10 @@ public class Controller {
         if (httpRequest.isAction())
             return Controller.handleAction(httpRequest);
         else if (httpRequest.isStaticResource()) {
-            var httpResponse = new HttpResponse();
-            httpResponse.writeFile(path);
-            return httpResponse;
+            return HttpResponse.writeFile(path);
         }
         else{
-            var httpResponse = new HttpResponse();
-            httpResponse.writePage(path, httpRequest.getRequestParams());
-            return httpResponse;
+            return HttpResponse.writePage(path, httpRequest.getRequestParams());
         }
     }
 }

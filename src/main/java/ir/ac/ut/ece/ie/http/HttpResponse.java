@@ -15,18 +15,18 @@ public class HttpResponse {
     public HttpResponse() {
     }
 
-    private static String createHeader(Long contentLength, String textType) {
-        return "HTTP1.1 200 OK \r\nContent-Type: text/" + textType + "\r\nContent.Length: "
-                + contentLength
-                + "\r\n\r\n";
-    }
+    public static HttpResponse noContent() throws IOException {
+        var httpResponse = new HttpResponse();
 
-    public void noContent() throws IOException {
         String header = "HTTP/1.1 204 No Content\nConnection: close\n";
-        response.add(header.getBytes());
+        httpResponse.response.add(header.getBytes());
+
+        return httpResponse;
     }
 
-    public void writePage(String pageName, Map<String, String> params) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
+    public static HttpResponse writePage(String pageName, Map<String, String> params) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
+        var httpResponse = new HttpResponse();
+
         Class<?> c = Class.forName("ir.ac.ut.ece.ie.pages." + pageName);
         Object page = c.getDeclaredConstructor().newInstance();
         Method method = c.getMethod("pageBody", Map.class);
@@ -34,11 +34,15 @@ public class HttpResponse {
 
         String header = createHeader((long) data.length, "html");
 
-        response.add(header.getBytes());
-        response.add(data);
+        httpResponse.response.add(header.getBytes());
+        httpResponse.response.add(data);
+
+        return httpResponse;
     }
 
-    public void writeFile(String fileName) throws IOException {
+    public static HttpResponse writeFile(String fileName) throws IOException {
+        var httpResponse = new HttpResponse();
+
         File file = new File("./src/main/resources/" + fileName);
 
         String header = createHeader(file.length(), getFileExtension(fileName));
@@ -55,8 +59,9 @@ public class HttpResponse {
                 buffer.write(data, 0, size);
             }
 
-            response.add(buffer.toByteArray());
+            httpResponse.response.add(buffer.toByteArray());
         }
+        return httpResponse;
     }
 
     private byte[] getJoinedResponse() throws IOException {
@@ -72,5 +77,11 @@ public class HttpResponse {
 
     public void write(OutputStream outputStream) throws IOException {
         outputStream.write(getJoinedResponse());
+    }
+
+    private static String createHeader(Long contentLength, String textType) {
+        return "HTTP1.1 200 OK \r\nContent-Type: text/" + textType + "\r\nContent.Length: "
+                + contentLength
+                + "\r\n\r\n";
     }
 }
