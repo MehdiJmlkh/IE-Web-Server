@@ -29,7 +29,7 @@ public class Controller {
         else if (httpRequest.isStaticResource())
             httpResponse.writeFile(path);
         else{
-            httpResponse.writePage(path, getParams(requestHeader));
+            httpResponse.writePage(path, httpRequest.getRequestParams());
         }
     }
 }

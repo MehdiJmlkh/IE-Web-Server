@@ -15,11 +15,13 @@ import ir.ac.ut.ece.ie.utils.UrlUtil;
 
 public class HttpRequest {
     private final String header;
+    private final Map<String, String> requestParams;
     Map<String, String> requestBody;
 
     public HttpRequest(Socket socket) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         header = reader.readLine();
+        requestParams = HttpRequestUtil.getParams(header);
         requestBody = parsePayload(readRawPayload(reader));
     }
 
@@ -74,4 +76,6 @@ public class HttpRequest {
     public Map<String, String> getRequestBody() {
         return requestBody;
     }
+
+    public Map<String, String> getRequestParams() {return requestParams;}
 }
