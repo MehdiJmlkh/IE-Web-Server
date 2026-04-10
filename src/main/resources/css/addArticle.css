@@ -3,7 +3,11 @@
 }
 
 .form-label {
-    margin: 12px 0 5px;
+    margin: 20px 0 5px;
+}
+
+.title-label {
+    margin-top: 10px;
 }
 
 .form__btn {
