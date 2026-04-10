@@ -1,9 +1,6 @@
 package ir.ac.ut.ece.ie.http;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -42,18 +39,22 @@ public class HttpResponse {
 
     public void writeFile(String fileName) throws IOException {
         File file = new File("./src/main/resources/" + fileName);
-        String header = createHeader(file.length(), getFileExtension(fileName));
-        outputStream.write(header.getBytes());
 
-        RandomAccessFile raf = new RandomAccessFile(file, "r");
-        byte[] data = new byte[1024];
-        int size = 0;
-        try {
-            while((size = raf.read(data)) != -1) {
-                outputStream.write(data, 0 , size);
+        String header = createHeader(file.length(), getFileExtension(fileName));
+
+        try (FileInputStream fis = new FileInputStream(file);
+             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+
+            buffer.write(header.getBytes());
+
+            byte[] data = new byte[1024];
+            int size;
+
+            while ((size = fis.read(data)) != -1) {
+                buffer.write(data, 0, size);
             }
-        } catch(IOException e) {
-            raf.close();
+
+            outputStream.write(buffer.toByteArray());
         }
     }
 }
