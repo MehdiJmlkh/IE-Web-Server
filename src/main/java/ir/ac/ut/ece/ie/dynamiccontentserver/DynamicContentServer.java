@@ -9,6 +9,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class DynamicContentServer {
+	private final Controller controller = new Controller();
+
 	public void start() throws IOException {
 		ServerSocket serverSocket = new ServerSocket(9092);
 
@@ -19,7 +21,7 @@ public class DynamicContentServer {
 			if (!httpRequest.isValid())
 				continue;
 			try {
-				var httpResponse = Controller.handle(httpRequest);
+				var httpResponse = controller.handle(httpRequest);
 				socket.getOutputStream().write(httpResponse.getResponse());
 
 			} catch (FileNotFoundException |

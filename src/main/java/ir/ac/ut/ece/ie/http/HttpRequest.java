@@ -23,14 +23,21 @@ public class HttpRequest {
         header = reader.readLine();
         requestParams = HttpRequestUtil.getParams(header);
         requestBody = parsePayload(readRawPayload(reader));
+        System.out.println(header);
     }
 
     public boolean isValid() {
         return header != null;
     }
 
-    public boolean isAction() {
-        return !requestBody.isEmpty();
+    public HttpMethod getMethod() {
+        String method = header.split(" ")[0].toLowerCase();
+        if (method.equals("get")) {
+            return HttpMethod.GET;
+        } else if (method.equals("post")) {
+            return HttpMethod.POST;
+        }
+        return null;
     }
 
     private String readRawPayload(BufferedReader reader) throws IOException {

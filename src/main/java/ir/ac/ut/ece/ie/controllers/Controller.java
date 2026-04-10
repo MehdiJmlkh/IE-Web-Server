@@ -2,6 +2,7 @@ package ir.ac.ut.ece.ie.controllers;
 
 import ir.ac.ut.ece.ie.dtos.AddArticleRequest;
 import ir.ac.ut.ece.ie.dtos.FilterArticlesRequest;
+import ir.ac.ut.ece.ie.http.HttpMethod;
 import ir.ac.ut.ece.ie.http.HttpRequest;
 import ir.ac.ut.ece.ie.http.HttpResponse;
 
@@ -10,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 
 
 public class Controller {
-    public static HttpResponse handleAction(HttpRequest httpRequest) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public HttpResponse handleAction(HttpRequest httpRequest) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         String command = httpRequest.getPath();
         var payload = httpRequest.getRequestBody();
         if (command.equals("filter-articles")) {
@@ -23,11 +24,12 @@ public class Controller {
         }
     }
 
-    public static HttpResponse handle(HttpRequest httpRequest) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public HttpResponse handle(HttpRequest httpRequest) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         String path = httpRequest.getPath();
 
-        if (httpRequest.isAction())
-            return Controller.handleAction(httpRequest);
+        var method = httpRequest.getMethod();
+        if (method == HttpMethod.POST)
+            return handleAction(httpRequest);
         else if (httpRequest.isStaticResource()) {
             return HttpResponse.writeFile(path);
         }
