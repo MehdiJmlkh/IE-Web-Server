@@ -49,8 +49,11 @@ public class Article implements Comparable<Article> {
     }
 
     @Override
-    public int compareTo(Article article) {
-        return year - article.getYear();
+    public int compareTo(Article other) {
+        if (citationIds.size() == other.getCitationIds().size()) {
+            return year - other.getYear();
+        }
+        return citationIds.size() - other.getCitationIds().size();
     }
 
     public List<Integer> getCitationIds() {
