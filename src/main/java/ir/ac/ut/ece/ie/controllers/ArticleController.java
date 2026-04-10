@@ -12,7 +12,7 @@ public class ArticleController {
 
     public HttpResponse addArticle(AddArticleRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         ArticleService.addArticle(request);
-        return HttpResponse.writePage("ShowArticles", null);
+        return HttpResponse.dynamicContent("ShowArticles", null);
     }
 
     public HttpResponse filterArticles(FilterArticlesRequest request) throws IOException {

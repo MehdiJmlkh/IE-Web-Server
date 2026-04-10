@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import ir.ac.ut.ece.ie.utils.UrlUtil;
 
 public class HttpRequest {
     private final String header;
@@ -75,10 +74,6 @@ public class HttpRequest {
         StringTokenizer tokenizer = new StringTokenizer(header, " ?");
         tokenizer.nextToken();
         return tokenizer.nextToken().substring(1);
-    }
-
-    public boolean isStaticResource() {
-        return UrlUtil.isStaticResource(getPath());
     }
 
     private Map<String, String> extractParams(String header) {

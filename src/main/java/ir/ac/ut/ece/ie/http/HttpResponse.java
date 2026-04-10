@@ -24,7 +24,7 @@ public class HttpResponse {
         return httpResponse;
     }
 
-    public static HttpResponse writePage(String pageName, Map<String, String> params) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
+    public static HttpResponse dynamicContent(String pageName, Map<String, String> params) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
         var httpResponse = new HttpResponse();
 
         Class<?> c = Class.forName("ir.ac.ut.ece.ie.pages." + pageName);
@@ -40,7 +40,7 @@ public class HttpResponse {
         return httpResponse;
     }
 
-    public static HttpResponse writeFile(String fileName) throws IOException {
+    public static HttpResponse staticContent(String fileName) throws IOException {
         var httpResponse = new HttpResponse();
 
         File file = new File("./src/main/resources/" + fileName);

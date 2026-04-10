@@ -5,6 +5,7 @@ import ir.ac.ut.ece.ie.dtos.FilterArticlesRequest;
 import ir.ac.ut.ece.ie.http.HttpMethod;
 import ir.ac.ut.ece.ie.http.HttpRequest;
 import ir.ac.ut.ece.ie.http.HttpResponse;
+import ir.ac.ut.ece.ie.utils.UrlUtil;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -39,11 +40,11 @@ public class Controller {
     private HttpResponse handleGet(HttpRequest request) throws IOException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         String path = request.getPath();
 
-        if (request.isStaticResource()) {
-            return HttpResponse.writeFile(path);
+        if (UrlUtil.isStaticResource(path)) {
+            return HttpResponse.staticContent(path);
         }
         else{
-            return HttpResponse.writePage(path, request.getRequestParams());
+            return HttpResponse.dynamicContent(path, request.getRequestParams());
         }
     }
 }
