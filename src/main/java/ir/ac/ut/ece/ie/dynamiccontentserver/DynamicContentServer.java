@@ -13,7 +13,7 @@ public class DynamicContentServer {
 	private final Controller controller = new Controller();
 
 	public void start() throws IOException {
-		ServerSocket serverSocket = new ServerSocket(9092);
+		ServerSocket serverSocket = new ServerSocket(8080);
 
 		Socket socket;
 		while ((socket = serverSocket.accept()) != null) {
