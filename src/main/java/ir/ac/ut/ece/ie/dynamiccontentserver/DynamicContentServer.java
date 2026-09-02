@@ -39,10 +39,4 @@ public class DynamicContentServer {
 		}
 		serverSocket.close();
 	}
-
-	public static void main(String[] args) throws IOException {
-		DynamicContentServer dcs = new DynamicContentServer();
-		dcs.start();
-	}
-
 }
