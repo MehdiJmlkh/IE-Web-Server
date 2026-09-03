@@ -2,12 +2,12 @@ package ir.ac.ut.ece.ie.repositories;
 
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.ac.ut.ece.ie.entities.Article;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class ArticleRepository {
 
     private static final ArticleRepository instance = new ArticleRepository();
-    private List<Article> articles = new ArrayList<>();
+    private final List<Article> articles = new ArrayList<>();
     private Integer lastGeneratedId = 0;
     private String searchInput = null;
 
@@ -24,8 +24,18 @@ public class ArticleRepository {
         try {
             ObjectMapper mapper = new ObjectMapper();
 
+            InputStream inputStream = ArticleRepository.class
+                    .getClassLoader()
+                    .getResourceAsStream("data/sampleArticles.json");
+
+            if (inputStream == null) {
+                throw new FileNotFoundException(
+                        "data/sampleArticles.json not found in classpath"
+                );
+            }
+
             mapper.readValue(
-                    new File("./src/main/resources/data/sampleArticles.json"),
+                    inputStream,
                     new TypeReference<List<Article>>() {}
             ).forEach(this::addArticle);
 
