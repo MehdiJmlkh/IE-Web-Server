@@ -15,22 +15,33 @@ public class DynamicContentServer {
 	public void start() throws IOException {
 		ServerSocket serverSocket = new ServerSocket(8080);
 
+		System.out.println("Server started on port 8080");
+
 		Socket socket;
 		while ((socket = serverSocket.accept()) != null) {
 			HttpRequest httpRequest = new HttpRequest(socket);
 
-			if (!httpRequest.isValid())
+			if (!httpRequest.isValid()) {
+				System.out.println("Invalid HTTP request");
+				socket.close();
 				continue;
+			}
 			try {
 				HttpResponse httpResponse = controller.handle(httpRequest);
 				socket.getOutputStream().write(httpResponse.getResponse());
 
 			} catch (FileNotFoundException |
-					ClassNotFoundException | InstantiationException | 
-					IllegalAccessException | IllegalArgumentException | 
-					InvocationTargetException | NoSuchMethodException | 
-					SecurityException e) {
-				String header = "HTTP1.1 404 Page Not Found\r\n\r\n";
+					 ClassNotFoundException |
+					 InstantiationException |
+					 IllegalAccessException |
+					 IllegalArgumentException |
+					 InvocationTargetException |
+					 NoSuchMethodException |
+					 SecurityException e) {
+
+				System.out.println("[ERROR] " + e.getMessage());
+
+				String header = "HTTP/1.1 404 Page Not Found\r\n\r\n";
 				socket.getOutputStream().write(header.getBytes());
 			}
 
