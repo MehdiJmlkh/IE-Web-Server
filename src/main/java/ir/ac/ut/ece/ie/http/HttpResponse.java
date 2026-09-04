@@ -3,6 +3,7 @@ package ir.ac.ut.ece.ie.http;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -57,21 +58,24 @@ public class HttpResponse {
     }
 
     public HttpResponse staticContent(String fileName) throws IOException {
-        File file = new File("./src/main/resources/" + fileName);
+        InputStream inputStream = getClass()
+                .getClassLoader()
+                .getResourceAsStream(fileName);
 
-        String header = createContentHeader(file.length(), getFileExtension(fileName));
+        if (inputStream == null) {
+            throw new FileNotFoundException(
+                    "Static resource not found: " + fileName
+            );
+        }
 
-        try (FileInputStream fis = new FileInputStream(file);
-             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+        try (InputStream is = inputStream;
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+            byte[] data = is.readAllBytes();
 
-            buffer.write(header.getBytes());
+            String header = createContentHeader((long) data.length, getFileExtension(fileName));
 
-            byte[] data = new byte[1024];
-            int size;
-
-            while ((size = fis.read(data)) != -1) {
-                buffer.write(data, 0, size);
-            }
+            buffer.write(header.getBytes(StandardCharsets.UTF_8));
+            buffer.write(data);
 
             response.add(buffer.toByteArray());
         }
