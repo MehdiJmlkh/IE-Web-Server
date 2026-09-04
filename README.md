@@ -21,3 +21,26 @@ Cited articles are displayed on the article page and linked to their respective 
 Articles are ordered by their number of references.
 
 ## How to Run
+
+### Using the Docker Hub Image
+
+Pull and run the latest image from Docker Hub:
+
+```bash
+docker pull mehdijmlkh/ie-web-server:latest
+docker run -p 8080:8080 mehdijmlkh/ie-web-server:latest
+```
+
+### Building the Image Locally
+
+If you prefer to build the Docker image locally, run:
+
+```bash
+git clone https://github.com/MehdiJmlkh/Custom-Web-Server.git
+cd Custom-Web-Server
+
+docker build -t ie-web-server:latest .
+docker run -p 8080:8080 ie-web-server:latest
+```
+
+Once the server is running, open http://localhost:8080 in your browser to access the application.
