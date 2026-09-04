@@ -37,7 +37,7 @@ Alternatively, you can build the Docker image locally:
 
 ```bash
 git clone https://github.com/MehdiJmlkh/IE-Web-Server.git
-cd Custom-Web-Server
+cd IE-Web-Server
 
 docker build -t ie-web-server:latest .
 docker run -p 8080:8080 ie-web-server:latest
