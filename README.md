@@ -33,7 +33,7 @@ docker run -p 8080:8080 mehdijmlkh/ie-web-server:latest
 
 ### Building the Image Locally
 
-If you prefer to build the Docker image locally, run:
+Alternatively, you can build the Docker image locally:
 
 ```bash
 git clone https://github.com/MehdiJmlkh/Custom-Web-Server.git
